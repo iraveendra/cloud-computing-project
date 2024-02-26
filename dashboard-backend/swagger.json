@@ -1,0 +1,411 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "API Documentation",
+      "description": "API documentation for brands, widgets, and apps."
+    },
+    "paths": {
+      "/brands/duplicate": {
+        "post": {
+          "summary": "Check duplicate brand name",
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/brands": {
+        "post": {
+          "summary": "Create a new brand",
+          "responses": {
+            "201": {
+              "description": "Created"
+            }
+          }
+        },
+        "get": {
+          "summary": "Get all brands",
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "/{id}": {
+          "get": {
+            "summary": "Get a brand by ID",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "type": "integer"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          },
+          "put": {
+            "summary": "Update a brand by ID",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "type": "integer"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          },
+          "delete": {
+            "summary": "Delete a brand by ID",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "type": "integer"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          }
+        },
+        "/name/{name}": {
+          "put": {
+            "summary": "Update a brand by name",
+            "parameters": [
+              {
+                "name": "name",
+                "in": "path",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          },
+          "delete": {
+            "summary": "Delete a brand by name",
+            "parameters": [
+              {
+                "name": "name",
+                "in": "path",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete all brands",
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "/count": {
+          "get": {
+            "summary": "Get total brand count",
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          }
+        }
+      },
+      "/widgets/duplicate": {
+        "post": {
+          "summary": "Check duplicate widget name",
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/widgets": {
+        "post": {
+          "summary": "Create a new widget",
+          "responses": {
+            "201": {
+              "description": "Created"
+            }
+          }
+        },
+        "get": {
+          "summary": "Get all widgets",
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "/{id}": {
+          "get": {
+            "summary": "Get a widget by ID",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "type": "integer"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          },
+          "put": {
+            "summary": "Update a widget by ID",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "type": "integer"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          },
+          "delete": {
+            "summary": "Delete a widget by ID",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "type": "integer"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          }
+        },
+        "/name/{name}": {
+          "put": {
+            "summary": "Update a widget by name",
+            "parameters": [
+              {
+                "name": "name",
+                "in": "path",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          },
+          "delete": {
+            "summary": "Delete a widget by name",
+            "parameters": [
+              {
+                "name": "name",
+                "in": "path",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete all widgets",
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "/count": {
+          "get": {
+            "summary": "Get total widget count",
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          }
+        }
+      },
+      "/apps/duplicate": {
+        "post": {
+          "summary": "Check duplicate app name",
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/apps": {
+        "post": {
+          "summary": "Create a new app",
+          "responses": {
+            "201": {
+              "description": "Created"
+            }
+          }
+        },
+        "get": {
+          "summary": "Get all apps",
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "/latest": {
+          "get": {
+            "summary": "Get an app by latest datetime",
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          }
+        },
+        "/{id}": {
+          "get": {
+            "summary": "Get an app by ID",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "type": "integer"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          },
+          "put": {
+            "summary": "Update an app by ID",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "type": "integer"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          },
+          "delete": {
+            "summary": "Delete an app by ID",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "type": "integer"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          }
+        },
+        "/name/{name}": {
+          "put": {
+            "summary": "Update an app by name",
+            "parameters": [
+              {
+                "name": "name",
+                "in": "path",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          },
+          "delete": {
+            "summary": "Delete an app by name",
+            "parameters": [
+              {
+                "name": "name",
+                "in": "path",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete all apps",
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "/count": {
+          "get": {
+            "summary": "Get total app count",
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  

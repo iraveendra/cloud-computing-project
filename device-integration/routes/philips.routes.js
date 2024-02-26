@@ -21,3 +21,4 @@ router.route("/lights/:id/:state").put(putLight);
 router.route("/lights/:id/:bri/:sat/:hue").put(adjustLight);
 
 export default router;
+
