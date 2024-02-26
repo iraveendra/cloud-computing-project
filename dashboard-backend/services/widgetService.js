@@ -1,6 +1,4 @@
-const { connectToDatabase } = require('./mongoService');
-const Widget = require('../models/widgetModel');
-const Brand = require('../models/brandModel');
+import { connectToDatabase } from './mongoService.js';
 
 async function checkDuplicateWidgetName(name) {
   try {
@@ -135,7 +133,7 @@ async function getTotalWidgetCount() {
   }
 }
 
-module.exports = {
+export {
   checkDuplicateWidgetName,
   createWidget,
   getWidgetById,

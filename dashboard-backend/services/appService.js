@@ -1,5 +1,4 @@
-const { connectToDatabase } = require('./mongoService');
-const App = require('../models/appModel');
+import { connectToDatabase } from './mongoService.js';
 
 async function checkDuplicateAppName(name) {
   try {
@@ -140,7 +139,7 @@ async function getTotalAppCount() {
   }
 }
 
-module.exports = {
+export {
   checkDuplicateAppName,
   createApp,
   getAppByLatestDatetime,

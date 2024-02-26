@@ -1,13 +1,19 @@
-const express = require('express');
-const cors = require('cors');
-const app = express();
-const config = require('./config');
-const swaggerDocument = require('./swagger.json'); // Path to Swagger JSON file
+import express from 'express';
+import cors from 'cors';
+import fs from 'fs';
 
-const { connectToDatabase } = require('./services/mongoService');
-const brandRoutes = require('./routes/brandRoutes');
-const widgetRoutes = require('./routes/widgetRoutes');
-const appRoutes = require('./routes/appRoutes');
+import config from './config.js';
+import swaggerUi from 'swagger-ui-express';
+
+// Read swagger.json file synchronously and parse it as JSON
+const swaggerDocument = JSON.parse(fs.readFileSync('./swagger.json'));
+
+import { connectToDatabase } from './services/mongoService.js';
+import brandRoutes from './routes/brandRoutes.js';
+import widgetRoutes from './routes/widgetRoutes.js';
+import appRoutes from './routes/appRoutes.js';
+
+const app = express();
 
 // Serve Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

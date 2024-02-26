@@ -1,4 +1,4 @@
-const {
+import {
     checkDuplicateBrandName,
     createBrand,
     getBrandById,
@@ -9,9 +9,9 @@ const {
     deleteBrandByName,
     deleteAllBrands,
     getTotalBrandCount,
-  } = require('../services/brandService');
+  } from '../services/brandService.js';
 
-  async function checkDuplicateBrandNameController(req, res) {
+async function checkDuplicateBrandNameController(req, res) {
     try {
       const { name } = req.body;
       const isDuplicate = await checkDuplicateBrandName(name);
@@ -22,7 +22,7 @@ const {
     }
   }
   
-  async function createBrandController(req, res) {
+async function createBrandController(req, res) {
     try {
       const { name, totalWidgets, totalProducts } = req.body;
       const isDuplicate = await checkDuplicateBrandName(name);
@@ -38,7 +38,7 @@ const {
     }
   }
   
-  async function getBrandByIdController(req, res) {
+async function getBrandByIdController(req, res) {
     try {
       const id = req.params.id;
       const brand = await getBrandById(id);
@@ -53,7 +53,7 @@ const {
     }
   }
   
-  async function getAllBrandsController(req, res) {
+async function getAllBrandsController(req, res) {
     try {
       const brands = await getAllBrands();
       res.status(200).json({ status: 'success', data: brands });
@@ -63,7 +63,7 @@ const {
     }
   }
   
-  async function updateBrandByIdController(req, res) {
+async function updateBrandByIdController(req, res) {
     try {
       const id = req.params.id;
       const updatedBrand = req.body;
@@ -79,7 +79,7 @@ const {
     }
   }
   
-  async function updateBrandByNameController(req, res) {
+async function updateBrandByNameController(req, res) {
     try {
       const name = req.params.name;
       const updatedBrand = req.body;
@@ -95,7 +95,7 @@ const {
     }
   }
   
-  async function deleteBrandByIdController(req, res) {
+async function deleteBrandByIdController(req, res) {
     try {
       const id = req.params.id;
       const result = await deleteBrandById(id);
@@ -110,7 +110,7 @@ const {
     }
   }
   
-  async function deleteBrandByNameController(req, res) {
+async function deleteBrandByNameController(req, res) {
     try {
       const name = req.params.name;
       const result = await deleteBrandByName(name);
@@ -125,7 +125,7 @@ const {
     }
   }
   
-  async function deleteAllBrandsController(req, res) {
+async function deleteAllBrandsController(req, res) {
     try {
       const result = await deleteAllBrands();
       res.status(200).json({ status: 'success', message: 'All brands deleted successfully' });
@@ -135,7 +135,7 @@ const {
     }
   }
   
-  async function getTotalBrandCountController(req, res) {
+async function getTotalBrandCountController(req, res) {
     try {
       const totalBrands = await getTotalBrandCount();
       res.status(200).json({ status: 'success', data: totalBrands });
@@ -145,7 +145,7 @@ const {
     }
   }
   
-  module.exports = {
+  export {
     checkDuplicateBrandNameController,
     createBrandController,
     getBrandByIdController,

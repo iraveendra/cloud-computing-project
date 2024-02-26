@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
+import {
   checkDuplicateBrandNameController,
   createBrandController,
   getBrandByIdController,
@@ -11,7 +11,7 @@ const {
   deleteBrandByNameController,
   deleteAllBrandsController,
   getTotalBrandCountController
-} = require('../controllers/brandController');
+} from '../controllers/brandController.js';
 
 router.post('/duplicate', checkDuplicateBrandNameController);
 router.post('/', createBrandController);
@@ -24,4 +24,4 @@ router.delete('/name/:name', deleteBrandByNameController);
 router.delete('/', deleteAllBrandsController);
 router.get('/count', getTotalBrandCountController);
 
-module.exports = router;
+export default router;
