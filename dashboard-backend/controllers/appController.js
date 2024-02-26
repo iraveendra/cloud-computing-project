@@ -1,4 +1,4 @@
-const {
+import {
     checkDuplicateAppName,
     createApp,
     getAppByLatestDatetime,
@@ -10,9 +10,9 @@ const {
     deleteAppByName,
     deleteAllApps,
     getTotalAppCount,
-  } = require('../services/appService');
+  } from '../services/appService.js';
   
-  async function checkDuplicateAppNameController(req, res) {
+async function checkDuplicateAppNameController(req, res) {
     try {
       const { name } = req.body;
       const isDuplicate = await checkDuplicateAppName(name);
@@ -23,7 +23,7 @@ const {
     }
   }
   
-  async function createAppController(req, res) {
+async function createAppController(req, res) {
     try {
       const app = req.body;
       const isDuplicate = await checkDuplicateAppName(app.name);
@@ -39,7 +39,7 @@ const {
     }
   }
   
-  async function getAppByLatestDatetimeController(req, res) {
+async function getAppByLatestDatetimeController(req, res) {
     try {
       const latestApp = await getAppByLatestDatetime();
       res.status(200).json({ status: 'success', data: latestApp });
@@ -49,7 +49,7 @@ const {
     }
   }
   
-  async function getAllAppsController(req, res) {
+async function getAllAppsController(req, res) {
     try {
       const apps = await getAllApps();
       res.status(200).json({ status: 'success', data: apps });
@@ -59,7 +59,7 @@ const {
     }
   }
   
-  async function getAppByIdController(req, res) {
+async function getAppByIdController(req, res) {
     try {
       const id = req.params.id;
       const app = await getAppById(id);
@@ -74,7 +74,7 @@ const {
     }
   }
   
-  async function updateAppByIdController(req, res) {
+async function updateAppByIdController(req, res) {
     try {
       const id = req.params.id;
       const updatedApp = req.body;
@@ -90,7 +90,7 @@ const {
     }
   }
   
-  async function updateAppByNameController(req, res) {
+async function updateAppByNameController(req, res) {
     try {
       const name = req.params.name;
       const updatedApp = req.body;
@@ -106,7 +106,7 @@ const {
     }
   }
   
-  async function deleteAppByIdController(req, res) {
+async function deleteAppByIdController(req, res) {
     try {
       const id = req.params.id;
       const result = await deleteAppById(id);
@@ -121,7 +121,7 @@ const {
     }
   }
   
-  async function deleteAppByNameController(req, res) {
+async function deleteAppByNameController(req, res) {
     try {
       const name = req.params.name;
       const result = await deleteAppByName(name);
@@ -136,7 +136,7 @@ const {
     }
   }
   
-  async function deleteAllAppsController(req, res) {
+async function deleteAllAppsController(req, res) {
     try {
       const result = await deleteAllApps();
       res.status(200).json({ status: 'success', message: 'All apps deleted successfully' });
@@ -146,7 +146,7 @@ const {
     }
   }
   
-  async function getTotalAppCountController(req, res) {
+async function getTotalAppCountController(req, res) {
     try {
       const totalApps = await getTotalAppCount();
       res.status(200).json({ status: 'success', data: totalApps });
@@ -156,7 +156,7 @@ const {
     }
   }
   
-  module.exports = {
+ export {
     checkDuplicateAppNameController,
     createAppController,
     getAppByLatestDatetimeController,

@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
+import {
   checkDuplicateWidgetNameController,
   createWidgetController,
   getWidgetByIdController,
@@ -11,7 +11,7 @@ const {
   deleteWidgetByNameController,
   deleteAllWidgetsController,
   getTotalWidgetCountController,
-} = require('../controllers/widgetController');
+} from '../controllers/widgetController.js';
 
 router.post('/duplicate', checkDuplicateWidgetNameController);
 router.post('/', createWidgetController);
@@ -24,4 +24,4 @@ router.delete('/name/:name', deleteWidgetByNameController);
 router.delete('/', deleteAllWidgetsController);
 router.get('/count', getTotalWidgetCountController);
 
-module.exports = router;
+export default router;

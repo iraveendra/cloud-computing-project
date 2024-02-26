@@ -1,5 +1,7 @@
-const { MongoClient } = require('mongodb');
-const config = require('../config');
+// mongoService.js
+
+import { MongoClient } from 'mongodb';
+import config from '../config.js';
 
 const uri = 'mongodb://localhost:27017';
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -15,4 +17,4 @@ async function connectToDatabase() {
   }
 }
 
-module.exports = { connectToDatabase };
+export { connectToDatabase }; // Change export syntax to ES module

@@ -1,5 +1,5 @@
-const { connectToDatabase } = require('./mongoService');
-const Brand = require('../models/brandModel');
+import { connectToDatabase } from './mongoService.js';
+import config from '../config.js'; 
 
 async function checkDuplicateBrandName(name) {
   try {
@@ -128,7 +128,7 @@ async function getTotalBrandCount() {
   }
 }
 
-module.exports = {
+export {
   checkDuplicateBrandName,
   createBrand,
   getBrandById,

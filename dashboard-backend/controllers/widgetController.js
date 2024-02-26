@@ -1,4 +1,4 @@
-const {
+import {
     checkDuplicateWidgetName,
     createWidget,
     getWidgetById,
@@ -9,9 +9,9 @@ const {
     deleteWidgetByName,
     deleteAllWidgets,
     getTotalWidgetCount,
-  } = require('../services/widgetService');
+  } from '../services/widgetService.js';
   
-  async function checkDuplicateWidgetNameController(req, res) {
+async function checkDuplicateWidgetNameController(req, res) {
     try {
       const { name } = req.body;
       const isDuplicate = await checkDuplicateWidgetName(name);
@@ -22,7 +22,7 @@ const {
     }
   }
   
-  async function createWidgetController(req, res) {
+async function createWidgetController(req, res) {
     try {
       const widget = req.body;
       const isDuplicate = await checkDuplicateWidgetName(widget.name);
@@ -38,7 +38,7 @@ const {
     }
   }
   
-  async function getWidgetByIdController(req, res) {
+async function getWidgetByIdController(req, res) {
     try {
       const id = req.params.id;
       const widget = await getWidgetById(id);
@@ -53,7 +53,7 @@ const {
     }
   }
   
-  async function getAllWidgetsController(req, res) {
+async function getAllWidgetsController(req, res) {
     try {
       const widgets = await getAllWidgets();
       res.status(200).json({ status: 'success', data: widgets });
@@ -63,7 +63,7 @@ const {
       }
     }
     
-    async function updateWidgetByIdController(req, res) {
+  async function updateWidgetByIdController(req, res) {
       try {
         const id = req.params.id;
         const updatedWidget = req.body;
@@ -79,7 +79,7 @@ const {
       }
     }
     
-    async function updateWidgetByNameController(req, res) {
+  async function updateWidgetByNameController(req, res) {
       try {
         const name = req.params.name;
         const updatedWidget = req.body;
@@ -95,7 +95,7 @@ const {
       }
     }
     
-    async function deleteWidgetByIdController(req, res) {
+  async function deleteWidgetByIdController(req, res) {
       try {
         const id = req.params.id;
         const result = await deleteWidgetById(id);
@@ -110,7 +110,7 @@ const {
       }
     }
     
-    async function deleteWidgetByNameController(req, res) {
+  async function deleteWidgetByNameController(req, res) {
       try {
         const name = req.params.name;
         const result = await deleteWidgetByName(name);
@@ -125,7 +125,7 @@ const {
       }
     }
     
-    async function deleteAllWidgetsController(req, res) {
+  async function deleteAllWidgetsController(req, res) {
       try {
         const result = await deleteAllWidgets();
         res.status(200).json({ status: 'success', message: 'All widgets deleted successfully' });
@@ -135,7 +135,7 @@ const {
       }
     }
     
-    async function getTotalWidgetCountController(req, res) {
+  async function getTotalWidgetCountController(req, res) {
       try {
         const totalWidgets = await getTotalWidgetCount();
         res.status(200).json({ status: 'success', data: totalWidgets });
@@ -145,7 +145,7 @@ const {
       }
     }
     
-    module.exports = {
+    export {
       checkDuplicateWidgetNameController,
       createWidgetController,
       getWidgetByIdController,

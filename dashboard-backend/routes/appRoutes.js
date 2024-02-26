@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
+import {
   checkDuplicateAppNameController,
   createAppController,
   getAppByLatestDatetimeController,
@@ -12,7 +12,7 @@ const {
   deleteAppByNameController,
   deleteAllAppsController,
   getTotalAppCountController,
-} = require('../controllers/appController');
+} from '../controllers/appController.js';
 
 router.post('/duplicate', checkDuplicateAppNameController);
 router.post('/', createAppController);
@@ -26,4 +26,4 @@ router.delete('/name/:name', deleteAppByNameController);
 router.delete('/', deleteAllAppsController);
 router.get('/count', getTotalAppCountController);
 
-module.exports = router;
+export default router;
