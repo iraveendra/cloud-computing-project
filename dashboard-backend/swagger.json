@@ -11,9 +11,17 @@
           "summary": "Check duplicate brand name",
           "responses": {
             "200": {
-              "description": "Success"
+              "description": "Success. Indicates whether the brand name is duplicate or not."
             }
-          }
+          },
+          "parameters": [
+            {
+              "name": "name",
+              "in": "body",
+              "description": "Brand name to check for duplication",
+              "required": true
+            }
+          ]
         }
       },
       "/brands": {
@@ -21,98 +29,25 @@
           "summary": "Create a new brand",
           "responses": {
             "201": {
-              "description": "Created"
+              "description": "Brand created successfully"
             }
-          }
+          },
+          "parameters": [
+            {
+              "name": "brand",
+              "in": "body",
+              "description": "Brand object to create",
+              "required": true
+            }
+          ]
         },
         "get": {
           "summary": "Get all brands",
           "responses": {
             "200": {
-              "description": "Success"
-            }
-          }
-        },
-        "/{id}": {
-          "get": {
-            "summary": "Get a brand by ID",
-            "parameters": [
-              {
-                "name": "id",
-                "in": "path",
-                "required": true,
-                "type": "integer"
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Success"
-              }
-            }
-          },
-          "put": {
-            "summary": "Update a brand by ID",
-            "parameters": [
-              {
-                "name": "id",
-                "in": "path",
-                "required": true,
-                "type": "integer"
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Success"
-              }
-            }
-          },
-          "delete": {
-            "summary": "Delete a brand by ID",
-            "parameters": [
-              {
-                "name": "id",
-                "in": "path",
-                "required": true,
-                "type": "integer"
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Success"
-              }
-            }
-          }
-        },
-        "/name/{name}": {
-          "put": {
-            "summary": "Update a brand by name",
-            "parameters": [
-              {
-                "name": "name",
-                "in": "path",
-                "required": true,
-                "type": "string"
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Success"
-              }
-            }
-          },
-          "delete": {
-            "summary": "Delete a brand by name",
-            "parameters": [
-              {
-                "name": "name",
-                "in": "path",
-                "required": true,
-                "type": "string"
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Success"
+              "description": "Success",
+              "schema": {
+                "type": "array"
               }
             }
           }
@@ -121,55 +56,191 @@
           "summary": "Delete all brands",
           "responses": {
             "200": {
+              "description": "Success. All brands deleted."
+            }
+          }
+        }
+      },
+      "/brands/{id}": {
+        "get": {
+          "summary": "Get a brand by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the brand to retrieve",
+              "required": true,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
               "description": "Success"
             }
           }
         },
-        "/count": {
-          "get": {
-            "summary": "Get total brand count",
-            "responses": {
-              "200": {
-                "description": "Success"
+        "put": {
+          "summary": "Update a brand by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the brand to update",
+              "required": true,
+              "type": "integer"
+            },
+            {
+              "name": "brand",
+              "in": "body",
+              "description": "Updated brand object",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success. Brand updated."
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete a brand by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the brand to delete",
+              "required": true,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success. Brand deleted."
+            }
+          }
+        }
+      },
+      "/brands/name/{name}": {
+        "put": {
+          "summary": "Update a brand by name",
+          "parameters": [
+            {
+              "name": "name",
+              "in": "path",
+              "description": "Name of the brand to update",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "brand",
+              "in": "body",
+              "description": "Updated brand object",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success. Brand updated."
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete a brand by name",
+          "parameters": [
+            {
+              "name": "name",
+              "in": "path",
+              "description": "Name of the brand to delete",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success. Brand deleted."
+            }
+          }
+        }
+      },
+      "/brands/count": {
+        "get": {
+          "summary": "Get total brand count",
+          "responses": {
+            "200": {
+              "description": "Success",
+              "schema": {
+                "type": "integer"
               }
             }
           }
         }
       },
-      "/widgets/duplicate": {
-        "post": {
-          "summary": "Check duplicate widget name",
-          "responses": {
-            "200": {
-              "description": "Success"
-            }
+        "/widgets/duplicate": {
+          "post": {
+            "summary": "Check duplicate widget name",
+            "responses": {
+              "200": {
+                "description": "Success. Indicates whether the widget name is duplicate or not."
+              }
+            },
+            "parameters": [
+              {
+                "name": "name",
+                "in": "body",
+                "description": "Widget name to check for duplication",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ]
           }
-        }
-      },
-      "/widgets": {
-        "post": {
-          "summary": "Create a new widget",
-          "responses": {
-            "201": {
-              "description": "Created"
+        },
+        "/widgets": {
+          "post": {
+            "summary": "Create a new widget",
+            "responses": {
+              "201": {
+                "description": "Widget created successfully"
+              }
+            },
+            "parameters": [
+              {
+                "name": "widget",
+                "in": "body",
+                "description": "Widget object to create",
+                "required": true
+              }
+            ]
+          },
+          "get": {
+            "summary": "Get all widgets",
+            "responses": {
+              "200": {
+                "description": "Success",
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "delete": {
+            "summary": "Delete all widgets",
+            "responses": {
+              "200": {
+                "description": "Success. All widgets deleted."
+              }
             }
           }
         },
-        "get": {
-          "summary": "Get all widgets",
-          "responses": {
-            "200": {
-              "description": "Success"
-            }
-          }
-        },
-        "/{id}": {
+        "/widgets/{id}": {
           "get": {
             "summary": "Get a widget by ID",
             "parameters": [
               {
                 "name": "id",
                 "in": "path",
+                "description": "ID of the widget to retrieve",
                 "required": true,
                 "type": "integer"
               }
@@ -186,13 +257,20 @@
               {
                 "name": "id",
                 "in": "path",
+                "description": "ID of the widget to update",
                 "required": true,
                 "type": "integer"
+              },
+              {
+                "name": "widget",
+                "in": "body",
+                "description": "Updated widget object",
+                "required": true
               }
             ],
             "responses": {
               "200": {
-                "description": "Success"
+                "description": "Success. Widget updated."
               }
             }
           },
@@ -202,31 +280,39 @@
               {
                 "name": "id",
                 "in": "path",
+                "description": "ID of the widget to delete",
                 "required": true,
                 "type": "integer"
               }
             ],
             "responses": {
               "200": {
-                "description": "Success"
+                "description": "Success. Widget deleted."
               }
             }
           }
         },
-        "/name/{name}": {
+        "/widgets/name/{name}": {
           "put": {
             "summary": "Update a widget by name",
             "parameters": [
               {
                 "name": "name",
                 "in": "path",
+                "description": "Name of the widget to update",
                 "required": true,
                 "type": "string"
+              },
+              {
+                "name": "widget",
+                "in": "body",
+                "description": "Updated widget object",
+                "required": true
               }
             ],
             "responses": {
               "200": {
-                "description": "Success"
+                "description": "Success. Widget updated."
               }
             }
           },
@@ -236,176 +322,298 @@
               {
                 "name": "name",
                 "in": "path",
+                "description": "Name of the widget to delete",
                 "required": true,
                 "type": "string"
               }
             ],
             "responses": {
               "200": {
-                "description": "Success"
+                "description": "Success. Widget deleted."
               }
             }
           }
         },
-        "delete": {
-          "summary": "Delete all widgets",
-          "responses": {
-            "200": {
-              "description": "Success"
-            }
-          }
-        },
-        "/count": {
+        "/widgets/count": {
           "get": {
             "summary": "Get total widget count",
             "responses": {
               "200": {
-                "description": "Success"
-              }
-            }
-          }
-        }
-      },
-      "/apps/duplicate": {
-        "post": {
-          "summary": "Check duplicate app name",
-          "responses": {
-            "200": {
-              "description": "Success"
-            }
-          }
-        }
-      },
-      "/apps": {
-        "post": {
-          "summary": "Create a new app",
-          "responses": {
-            "201": {
-              "description": "Created"
-            }
-          }
-        },
-        "get": {
-          "summary": "Get all apps",
-          "responses": {
-            "200": {
-              "description": "Success"
-            }
-          }
-        },
-        "/latest": {
-          "get": {
-            "summary": "Get an app by latest datetime",
-            "responses": {
-              "200": {
-                "description": "Success"
+                "description": "Success",
+                "schema": {
+                  "type": "integer"
+                }
               }
             }
           }
         },
-        "/{id}": {
-          "get": {
-            "summary": "Get an app by ID",
-            "parameters": [
-              {
-                "name": "id",
-                "in": "path",
-                "required": true,
-                "type": "integer"
+        "/apps/duplicate": {
+            "post": {
+              "summary": "Check duplicate app name",
+              "responses": {
+                "200": {
+                  "description": "Success. Indicates whether the app name is duplicate or not."
+                }
+              },
+              "parameters": [
+                {
+                  "name": "name",
+                  "in": "body",
+                  "description": "App name to check for duplication",
+                  "required": true,
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          },
+          "/apps": {
+            "post": {
+              "summary": "Create a new app",
+              "responses": {
+                "201": {
+                  "description": "App created successfully"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "app",
+                  "in": "body",
+                  "description": "App object to create",
+                  "required": true
+                }
+              ]
+            },
+            "get": {
+              "summary": "Get all apps",
+              "responses": {
+                "200": {
+                  "description": "Success",
+                  "schema": {
+                    "type": "array"
+                  }
+                }
               }
-            ],
-            "responses": {
-              "200": {
-                "description": "Success"
+            },
+            "delete": {
+              "summary": "Delete all apps",
+              "responses": {
+                "200": {
+                  "description": "Success. All apps deleted."
+                }
               }
             }
           },
-          "put": {
-            "summary": "Update an app by ID",
-            "parameters": [
-              {
-                "name": "id",
-                "in": "path",
-                "required": true,
-                "type": "integer"
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Success"
+          "/apps/latest": {
+            "get": {
+              "summary": "Get an app by latest datetime",
+              "responses": {
+                "200": {
+                  "description": "Success"
+                }
               }
             }
           },
-          "delete": {
-            "summary": "Delete an app by ID",
-            "parameters": [
-              {
-                "name": "id",
-                "in": "path",
-                "required": true,
-                "type": "integer"
+          "/apps/{id}": {
+            "get": {
+              "summary": "Get an app by ID",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "description": "ID of the app to retrieve",
+                  "required": true,
+                  "type": "integer"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Success"
+                }
               }
-            ],
-            "responses": {
-              "200": {
-                "description": "Success"
+            },
+            "put": {
+              "summary": "Update an app by ID",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "description": "ID of the app to update",
+                  "required": true,
+                  "type": "integer"
+                },
+                {
+                  "name": "app",
+                  "in": "body",
+                  "description": "Updated app object",
+                  "required": true
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Success. App updated."
+                }
               }
-            }
-          }
-        },
-        "/name/{name}": {
-          "put": {
-            "summary": "Update an app by name",
-            "parameters": [
-              {
-                "name": "name",
-                "in": "path",
-                "required": true,
-                "type": "string"
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Success"
+            },
+            "delete": {
+              "summary": "Delete an app by ID",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "description": "ID of the app to delete",
+                  "required": true,
+                  "type": "integer"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Success. App deleted."
+                }
               }
             }
           },
-          "delete": {
-            "summary": "Delete an app by name",
-            "parameters": [
-              {
-                "name": "name",
-                "in": "path",
-                "required": true,
-                "type": "string"
+          "/apps/name/{name}": {
+            "put": {
+              "summary": "Update an app by name",
+              "parameters": [
+                {
+                  "name": "name",
+                  "in": "path",
+                  "description": "Name of the app to update",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "app",
+                  "in": "body",
+                  "description": "Updated app object",
+                  "required": true
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Success. App updated."
+                }
               }
-            ],
-            "responses": {
-              "200": {
-                "description": "Success"
+            },
+            "delete": {
+              "summary": "Delete an app by name",
+              "parameters": [
+                {
+                  "name": "name",
+                  "in": "path",
+                  "description": "Name of the app to delete",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Success. App deleted."
+                }
+              }
+            }
+          },
+          "/apps/count": {
+            "get": {
+              "summary": "Get total app count",
+              "responses": {
+                "200": {
+                  "description": "Success",
+                  "schema": {
+                    "type": "integer"
+                  }
+                }
               }
             }
           }
-        },
-        "delete": {
-          "summary": "Delete all apps",
-          "responses": {
-            "200": {
-              "description": "Success"
+    },
+        "definitions": {
+          "Brand": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 1
+              },
+              "name": {
+                "type": "string",
+                "example": "BrandName"
+              },
+              "totalWidgets": {
+                "type": "integer",
+                "example": 2
+              },
+              "totalProducts": {
+                "type": "integer",
+                "example": 2
+              },
+              "datetime": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2024-02-28T10:00:00Z"
+              }
             }
-          }
-        },
-        "/count": {
-          "get": {
-            "summary": "Get total app count",
-            "responses": {
-              "200": {
-                "description": "Success"
+          },
+          "Widget": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 1
+              },
+              "name": {
+                "type": "string",
+                "example": "WidgetName"
+              },
+              "description": {
+                "type": "string",
+                "example": "Description of the widget"
+              },
+              "brand": {
+                "type": "integer",
+                "example": 1
+              },
+              "datetime": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2024-02-28T10:00:00Z"
+              }
+            }
+          },
+          "App": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 1
+              },
+              "name": {
+                "type": "string",
+                "example": "Sample App"
+              },
+              "description": {
+                "type": "string",
+                "example": "This is a sample app"
+              },
+              "widgets": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                },
+                "example": [1, 2, 3]
+              },
+              "datetime": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2024-02-28T10:00:00Z"
               }
             }
           }
         }
       }
-    }
-  }
+      
+  
   

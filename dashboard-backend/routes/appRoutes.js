@@ -16,6 +16,7 @@ import {
 
 router.post('/duplicate', checkDuplicateAppNameController);
 router.post('/', createAppController);
+router.get('/count', getTotalAppCountController);
 router.get('/latest', getAppByLatestDatetimeController);
 router.get('/', getAllAppsController);
 router.get('/:id', getAppByIdController);
@@ -24,6 +25,6 @@ router.put('/name/:name', updateAppByNameController);
 router.delete('/:id', deleteAppByIdController);
 router.delete('/name/:name', deleteAppByNameController);
 router.delete('/', deleteAllAppsController);
-router.get('/count', getTotalAppCountController);
+
 
 export default router;

@@ -1,4 +1,5 @@
 import {
+   checkDuplicateWidgetId,
     checkDuplicateWidgetName,
     createWidget,
     getWidgetById,
@@ -10,33 +11,37 @@ import {
     deleteAllWidgets,
     getTotalWidgetCount,
   } from '../services/widgetService.js';
-  
+
 async function checkDuplicateWidgetNameController(req, res) {
-    try {
-      const { name } = req.body;
-      const isDuplicate = await checkDuplicateWidgetName(name);
-      res.status(200).json({ status: 'success', data: isDuplicate });
-    } catch (error) {
-      console.error('Error checking duplicate widget name:', error.message);
-      res.status(500).json({ status: 'error', message: 'Internal Server Error' });
-    }
+  try {
+    const isDuplicateName = await checkDuplicateWidgetName(req.body.name);
+    const isDuplicateId = await checkDuplicateWidgetId(req.body.id);
+    res.status(200).json({ status: 'success', data: { isDuplicateName, isDuplicateId } });
+  } catch (error) {
+    console.error('Error checking duplicate widget:', error.message);
+    res.status(500).json({ status: 'error', message: 'Internal Server Error' });
   }
-  
+}
+
 async function createWidgetController(req, res) {
-    try {
-      const widget = req.body;
-      const isDuplicate = await checkDuplicateWidgetName(widget.name);
-      if (isDuplicate) {
-        res.status(400).json({ status: 'error', message: 'Widget name already exists' });
-      } else {
-        const newWidget = await createWidget(widget);
-        res.status(201).json({ status: 'success', data: newWidget });
-      }
-    } catch (error) {
-      console.error('Error creating widget:', error.message);
-      res.status(500).json({ status: 'error', message: 'Internal Server Error' });
+  try {
+    const isDuplicateName = await checkDuplicateWidgetName(req.body.name);
+    const isDuplicateId = await checkDuplicateWidgetId(req.body.id);
+    
+    if (isDuplicateName) {
+      res.status(400).json({ status: 'error', message: 'Widget name already exists' });
+    } else if (isDuplicateId) {
+      res.status(400).json({ status: 'error', message: 'Widget ID already exists' });
+    } else {
+      const newWidget = await createWidget(req.body);
+      res.status(201).json({ status: 'success', data: newWidget });
     }
+  } catch (error) {
+    console.error('Error creating widget:', error.message);
+    res.status(500).json({ status: 'error', message: 'Internal Server Error' });
   }
+}
+
   
 async function getWidgetByIdController(req, res) {
     try {
@@ -63,31 +68,38 @@ async function getAllWidgetsController(req, res) {
       }
     }
     
-  async function updateWidgetByIdController(req, res) {
+    async function updateWidgetByIdController(req, res) {
       try {
         const id = req.params.id;
         const updatedWidget = req.body;
         const result = await updateWidgetById(id, updatedWidget);
-        if (!result) {
+    
+        if (result === 'not_found') {
           res.status(404).json({ status: 'error', message: 'Widget not found' });
-        } else {
+        } else if (result === 'updated') {
           res.status(200).json({ status: 'success', message: 'Widget updated successfully' });
+        } else if (result === 'not_updated') {
+          res.status(200).json({ status: 'success', message: 'Widget found but not modified' });
         }
       } catch (error) {
         console.error('Error updating widget by ID:', error.message);
         res.status(500).json({ status: 'error', message: 'Internal Server Error' });
       }
     }
-    
-  async function updateWidgetByNameController(req, res) {
+
+    async function updateWidgetByNameController(req, res) {
       try {
         const name = req.params.name;
         const updatedWidget = req.body;
+    
         const result = await updateWidgetByName(name, updatedWidget);
-        if (!result) {
+    
+        if (result === 'not_found') {
           res.status(404).json({ status: 'error', message: 'Widget not found' });
-        } else {
+        } else if (result === 'updated') {
           res.status(200).json({ status: 'success', message: 'Widget updated successfully' });
+        } else if (result === 'not_updated') {
+          res.status(200).json({ status: 'success', message: 'Widget found but not modified' });
         }
       } catch (error) {
         console.error('Error updating widget by name:', error.message);
