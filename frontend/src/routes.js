@@ -1,4 +1,5 @@
 
+import AppsCollections from "views/AppsCollection/AppsCollections";
 import Dashboard from "views/Dashboard.js";
 import Icons from "views/Icons.js";
 import WidgetForm from "views/WidgetForm/WidgetForm";
@@ -16,6 +17,14 @@ var routes = [
     name: "Widget Form",
     icon: "tim-icons icon-tag",
     component: <WidgetForm />,
+    layout: "/admin",
+  },
+
+  {
+    path: "/apps-collection",
+    name: "Apps Collection",
+    icon: "tim-icons icon-bullet-list-67",
+    component: <AppsCollections />,
     layout: "/admin",
   },
   {

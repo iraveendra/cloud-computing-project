@@ -1,6 +1,6 @@
-import { Button, Card, CardBody, Col, FormGroup, Input, Label, Row } from "reactstrap";
+import { Button, Card, CardBody, Col, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, Row, UncontrolledDropdown } from "reactstrap";
 
-export default function WidgetForm(props) {
+export default function AppsCollections(props) {
 
     return (
         <div className="content">
@@ -25,15 +25,26 @@ export default function WidgetForm(props) {
                                         id="description"
                                         placeholder="Enter description"
                                     />
-                                    <Label for="description">Brand</Label>
+                                    <Label for="description">widgets</Label>
                                     <Input
-                                        type="brand"
-                                        name="brand"
-                                        id="brand"
-                                        placeholder="Enter brand"
+                                        type="widgets"
+                                        name="widgets"
+                                        id="widgets"
+                                        placeholder="Select Widgets"
                                     />
+                                    <UncontrolledDropdown>
+                                        <DropdownToggle caret data-toggle="dropdown">
+                                            Dropdown button
+                                        </DropdownToggle>
+                                        <DropdownMenu>
+                                            <DropdownItem>Action</DropdownItem>
+                                            <DropdownItem>Another Action</DropdownItem>
+                                            <DropdownItem>Something else here</DropdownItem>
+                                        </DropdownMenu>
+                                    </UncontrolledDropdown>
+
                                     <Button color="secondary" type="submit">
-                                        submit
+                                        Submit
                                     </Button>
                                 </FormGroup>
 
