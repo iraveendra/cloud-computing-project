@@ -1,15 +1,106 @@
 import axios from "axios";
 import properties from "../config.json" assert { type: 'json' }
-const uri = properties.http + properties.bridgeip + properties.hue.path;
-const uriWithAuth = uri + properties.hue.username;
+const uri = `${properties.http}${properties.hue.bridgeip}${properties.hue.path}`;
+const uriWithAuth = `${uri}${properties.hue.username}`;
 
-const test = async (req, res) => {
+const handleAxiosError = (res, error) => {
+    if (error.response) {
+        const { status, data } = error.response;
+        res.status(status).json(data);
+    } else {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const getLights = async (req, res) => {
     try {
-        var response = {
-            code: 1,
-            msg: "Hello from Philips"
+        const url = `${uriWithAuth}/lights`;
+        axios({
+            method: 'get',
+            url: url,
+            timeout: 5000
+        })
+        .then(function (response) {
+            res.send(response.data);
+        })
+        .catch(function (error) {
+            handleAxiosError(res, error);
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const getLight = async (req, res) => {
+    try {
+        const url = `${uriWithAuth}/lights/${req.params.id}`;
+        console.log(url);
+        axios({
+            method: 'get',
+            url: url,
+            timeout: 5000
+        })
+        .then(function (response) {
+            res.send(response.data);
+        })
+        .catch(function (error) {
+            handleAxiosError(res, error);
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const putLight = async (req, res) => {
+    try {
+        let url = `${uriWithAuth}/lights/${req.params.id}/state`; 
+        let data;
+        if (req.params.state == 'state') {
+            data = req.body
+        } else {
+            let state = req.params.state == 'on' ? true : false;
+            data = {
+                "on": state
+            }
         }
-        res.send(response);
+        axios({
+            method: 'put',
+            url: url,
+            data: data,
+            timeout: 5000
+        })
+        .then(function (response) {
+            res.send(response.data);
+        })
+        .catch(function (error) {
+            handleAxiosError(res, error);
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const adjustLight = async (req, res) => {
+    try {
+        const url = `${uriWithAuth}/lights/${req.params.id}/state`; 
+        const data = {
+            "on": true,
+            "bri": Number(req.params.bri),
+            "sat": Number(req.params.sat),
+            "hue": Number(req.params.hue)
+        }
+        axios({
+            method: 'put',
+            url: url,
+            data: data,
+            timeout: 5000
+        })
+        .then(function (response) {
+            res.send(response.data);
+        })
+        .catch(function (error) {
+            handleAxiosError(res, error);
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -19,13 +110,14 @@ const apiNewDeveloper = async (req, res) => {
     try {
         axios({
             method:'get',
-            url: uri + 'newdeveloper'
+            url: `${uri}newdeveloper`,
+            timeout: 5000
         })
         .then(function (response) {
-            res.send(JSON.stringify(response.data));
+            res.send(response.data);
         })
         .catch(function (error) {
-            console.log(error);
+            handleAxiosError(res, error);
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -39,101 +131,27 @@ const registerApp = async (req, res) => {
             url: uri,
             data: {
                 devicetype: properties.devicetype
-            }
+            },
+            timeout: 5000
         })
         .then(function (response) {
-            res.send(JSON.stringify(response.data));
+            res.send(response.data);
         })
         .catch(function (error) {
-            console.log(error);
+            handleAxiosError(res, error);
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-
-const getLights = async (req, res) => {
+const test = async (req, res) => {
     try {
-        var url = uriWithAuth + '/lights';
-        console.log(url);
-        axios({
-            method:'get',
-            url: url
-        })
-        .then(function (response) {
-            res.send(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-const getLight = async (req, res) => {
-    try {
-        var url = uriWithAuth + '/lights/' + req.params.id;
-        console.log(url);
-        axios({
-            method:'get',
-            url: url
-        })
-        .then(function (response) {
-            res.send(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-const putLight = async (req, res) => {
-    try {
-        var state = req.params.state == 'on'? true : false;
-        var url = uriWithAuth + '/lights/' + req.params.id + '/state'; 
-        var data = {
-            "on": state
+        var response = {
+            status: "success",
+            message: "Hello from Philips"
         }
-        axios({
-            method:'put',
-            url: url,
-            data: data
-        })
-        .then(function (response) {
-            res.send(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-const adjustLight = async (req, res) => {
-    try {
-        var url = uriWithAuth + '/lights/' + req.params.id + '/state'; 
-        var data = {
-            "on": true,
-            "bri": Number(req.params.bri),
-            "sat": Number(req.params.sat),
-            "hue": Number(req.params.hue)
-        }
-        axios({
-            method:'put',
-            url: url,
-            data: data
-        })
-        .then(function (response) {
-            res.send(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+        res.send(response);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
