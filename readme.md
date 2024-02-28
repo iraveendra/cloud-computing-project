@@ -22,6 +22,8 @@ curl http://localhost:3000/lifx
 #{"code":1,"msg":"Hello from LIFX"
 
 #access the frontend
-curl http://localhost
-<html><body><h1>It works!</h1></body></html>
+curl http://localhost:8080
 ```
+
+
+
