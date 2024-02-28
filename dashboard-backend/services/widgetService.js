@@ -1,4 +1,18 @@
 import { connectToDatabase } from './mongoService.js';
+import config from '../config.js'; 
+
+async function checkDuplicateWidgetId(id) {
+  try {
+    const client = await connectToDatabase();
+    const db = client.db(config.dbName);
+    const collection = db.collection('widgets');
+    const existingWidget = await collection.findOne({ _id: id });
+    return existingWidget !== null;
+  } catch (error) {
+    console.error('Error checking duplicate widget ID:', error.message);
+    throw error;
+  }
+}
 
 async function checkDuplicateWidgetName(name) {
   try {
@@ -18,26 +32,39 @@ async function createWidget(widget) {
     const client = await connectToDatabase();
     const db = client.db(config.dbName);
     const collection = db.collection('widgets');
-    const result = await collection.insertOne(widget);
+    const datetime = new Date().toISOString();
 
-    // Update totalWidgets field for the brand
-    const brandId = widget.brand;
+    if (widget.id && widget.name && widget.name && widget.description && widget.brand) {
+      var widgetData = {
+        _id: widget.id,
+        name: widget.name,
+        description: widget.description,
+        brand: widget.brand,
+        datetime: datetime
+      };
+    }
+
+    const result = await collection.insertOne(widgetData);
+
+    const brandId = widgetData.brand;
     const brandCollection = db.collection('brands');
-    await brandCollection.updateOne({ id: brandId }, { $inc: { totalWidgets: 1 } });
+    await brandCollection.updateOne({ _id: brandId }, { $inc: { totalWidgets: 1 } });
 
-    return result.ops[0];
+    return result;
   } catch (error) {
     console.error('Error creating widget:', error.message);
     throw error;
   }
 }
 
+
 async function getWidgetById(id) {
   try {
     const client = await connectToDatabase();
     const db = client.db(config.dbName);
     const collection = db.collection('widgets');
-    return await collection.findOne({ id });
+    var _id = id;
+    return await collection.findOne({ _id });
   } catch (error) {
     console.error('Error getting widget by ID:', error.message);
     throw error;
@@ -61,8 +88,27 @@ async function updateWidgetById(id, updatedWidget) {
     const client = await connectToDatabase();
     const db = client.db(config.dbName);
     const collection = db.collection('widgets');
-    const result = await collection.updateOne({ id }, { $set: updatedWidget });
-    return result.modifiedCount > 0;
+    const _id = id;
+
+    // Check if the widget with the given ID exists
+    const existingWidget = await collection.findOne({ _id });
+
+    if (!existingWidget) {
+      return 'not_found'; // Widget not found
+    }
+
+    // Exclude _id and name fields from the updatedWidget object
+    if (updatedWidget.id) delete updatedWidget.id;
+    if (updatedWidget.name) delete updatedWidget.name;
+
+    // Update the widget with the new values
+    const result = await collection.updateOne({ _id }, { $set: updatedWidget });
+
+    if (result.modifiedCount > 0) {
+      return 'updated'; // Widget updated successfully
+    } else {
+      return 'not_updated'; // Widget found but not modified
+    }
   } catch (error) {
     console.error('Error updating widget by ID:', error.message);
     throw error;
@@ -74,8 +120,26 @@ async function updateWidgetByName(name, updatedWidget) {
     const client = await connectToDatabase();
     const db = client.db(config.dbName);
     const collection = db.collection('widgets');
+
+    // Check if the widget with the given name exists
+    const existingWidget = await collection.findOne({ name });
+
+    if (!existingWidget) {
+      return 'not_found'; // Widget not found
+    }
+
+    // Exclude _id and name fields from the updatedWidget object
+    if (updatedWidget.id) delete updatedWidget.id;
+    if (updatedWidget.name) delete updatedWidget.name;
+
+    // Update the widget with the new values
     const result = await collection.updateOne({ name }, { $set: updatedWidget });
-    return result.modifiedCount > 0;
+
+    if (result.modifiedCount > 0) {
+      return 'updated'; // Widget updated successfully
+    } else {
+      return 'not_updated'; // Widget found but not modified
+    }
   } catch (error) {
     console.error('Error updating widget by name:', error.message);
     throw error;
@@ -87,7 +151,8 @@ async function deleteWidgetById(id) {
     const client = await connectToDatabase();
     const db = client.db(config.dbName);
     const collection = db.collection('widgets');
-    const result = await collection.deleteOne({ id });
+    var _id = id;
+    const result = await collection.deleteOne({ _id });
     return result.deletedCount > 0;
   } catch (error) {
     console.error('Error deleting widget by ID:', error.message);
@@ -134,6 +199,7 @@ async function getTotalWidgetCount() {
 }
 
 export {
+  checkDuplicateWidgetId,
   checkDuplicateWidgetName,
   createWidget,
   getWidgetById,
