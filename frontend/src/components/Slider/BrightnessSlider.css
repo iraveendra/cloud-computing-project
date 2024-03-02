@@ -1,0 +1,59 @@
+/* BrightnessSlider.css */
+.slider-container {
+    width: 100%; /* Container width - can be set to whatever you like */
+    padding: 30px; /* Padding around the slider */
+  }
+  
+  .slider {
+    -webkit-appearance: none; /* Override default CSS styles */
+    appearance: none;
+    width: 100%; /* Full-width */
+    height: 25px; /* Specified height */
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+    border-radius: 10px; /* iOS style border radius */
+  }
+  
+  .slider:hover {
+    opacity: 1; /* Fully opaque on hover */
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #fff; /* White background */
+    cursor: pointer; /* Cursor on hover */
+    border-radius: 50%; /* Circular cursor */
+    border: 1px solid #ccc; /* Grey border */
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #fff; /* White background */
+    cursor: pointer; /* Cursor on hover */
+    border-radius: 50%; /* Circular cursor */
+    border: 1px solid #ccc; /* Grey border */
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+  }
+  /* ... existing styles ... */
+
+.slider:disabled {
+    opacity: 0.5; /* Dim the slider when disabled */
+    cursor: not-allowed; /* Show a not-allowed cursor */
+  }
+  
+  .slider:disabled::-webkit-slider-thumb {
+    background: #ccc; /* Change thumb color when disabled */
+  }
+  
+  .slider:disabled::-moz-range-thumb {
+    background: #ccc; /* Change thumb color when disabled for Firefox */
+  }
+  

@@ -32,23 +32,69 @@ import {
   chartExample3,
   chartExample4,
 } from "variables/charts.js";
+import DashboardCard from "components/DashboardCard/DashboardCard";
 
 function Dashboard(props) {
-  const [bigChartData, setbigChartData] = React.useState("data1");
-  const setBgChartData = (name) => {
-    setbigChartData(name);
-  };
+
+  const value ={
+    "Name": "Widget-1",
+    "status": true,
+    "Brand": "Philips",
+    "Brightness": 10
+  }
+  const widgetData = [
+    {
+      "Name": "Widget-1",
+      "status": true,
+      "Brand": "Philips",
+      "Brightness": 10
+    },
+    {
+      "Name": "Widget-2",
+      "status": true,
+      "Brand": "Philips",
+      "Brightness": 90
+    },
+    {
+      "Name": "Widget-3",
+      "status": false,
+      "Brand": "Philips",
+      "Brightness": 30
+    },
+    {
+      "Name": "Widget-4",
+      "status": false,
+      "Brand": "Philips",
+      "Brightness": 50
+    }
+  ]
+
   return (
     <>
       <div className="content">
         <Row>
-          <Col>
-            <Card>
-              <CardBody>
-                <h2>Dashboard</h2>
-              </CardBody>
-            </Card>
+          <Col lg="4" key={1}>
+            <DashboardCard
+              key={1}
+              name={value["Name"]}
+              status={value["status"]}
+              brightness={value["Brightness"]}
+            />
           </Col>
+          {/* {
+            widgetData.map((value, index) => {
+              return (
+                <Col lg="4" key={index}>
+                  <DashboardCard
+                    key={index}
+                    name={value["Name"]}
+                    status={value["status"]}
+                    brightness={value["Brightness"]}
+                  />
+                </Col>
+              )
+            })
+          } */}
         </Row>
       </div>
     </>

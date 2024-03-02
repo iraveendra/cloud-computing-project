@@ -1,0 +1,108 @@
+/* ToggleSwitch.css */
+.toggle-switch {
+    position: relative;
+    width: 50px; /* Width of the switch */
+    display: inline-block;
+  }
+  
+  .toggle-switch-checkbox {
+    display: none; /* Hide the default checkbox */
+  }
+  
+  .toggle-switch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 20px;
+    border: 1px solid #ccc; /* Border of the switch */
+  }
+  
+  .toggle-switch-inner {
+    display: block;
+    width: 200%;
+    height: 20px;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+    text-align: left;
+  }
+  
+  .toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-inner {
+    margin-left: 0;
+  }
+  
+  .toggle-switch-switch {
+    display: block;
+    width: 18px; /* Width of the circle */
+    height: 18px; /* Height of the circle */
+    margin: 4px;
+    background: #fff; /* Background of the circle */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 26px; /* Position from the right when not checked */
+    border: 1px solid #ccc; /* Border of the circle */
+    border-radius: 20px;
+    transition: all 0.3s ease-in 0s;
+  }
+  
+  .toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-switch {
+    right: 0px; /* Position from the right when checked */
+    background-color: #4cd964; /* Background of the circle when checked */
+  }
+  
+
+  /* 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  */
+
+  /* ToggleSwitch.css */
+.react-switch-checkbox {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+
+.react-switch-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  width: 50px; /* Width of the switch */
+  height: 25px; /* Height of the switch */
+  background: grey;
+  border-radius: 100px;
+  position: relative;
+  transition: background-color .2s;
+}
+
+.react-switch-label .react-switch-button {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 21px; /* Width of the circle */
+  height: 21px; /* Height of the circle */
+  border-radius: 45px;
+  transition: 0.2s;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.react-switch-checkbox:checked + .react-switch-label .react-switch-button {
+  left: calc(100% - 2px);
+  transform: translateX(-100%);
+}
+
+.react-switch-label:active .react-switch-button {
+  width: 28px; /* Width of the circle when clicked */
+}

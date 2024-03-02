@@ -1,0 +1,12 @@
+.custom-icon{
+    font-size: 30px;
+}
+
+.icon-switch-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.widget-details{
+ margin-top: 2rem;   
+}
