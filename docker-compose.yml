@@ -7,14 +7,16 @@ services:
       - "27017:27017"
     volumes:
       - db_data:/data/db
-      - ./dashboard-backend/data/db:/data/initdb:ro
+      - ./dashboard-backend/data/db:/docker-entrypoint-initdb.d/db:ro
       - ./dashboard-backend/data/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
     
 
 
 
   frontend:
-    image: nginx:alpine
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "8080:80"
     volumes:
