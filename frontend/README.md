@@ -1,4 +1,37 @@
-# Getting Started with Create React App
+# Front End
+## TOOLS INSTALL
+
+In Docker Compose setup, the frontend service is using the nginx:alpine image, which is based on Alpine Linux, a lightweight Linux distribution. If you need to install additional tools like the faas-cli (Function as a Service CLI) into your nginx container, please go the the dockerfile to add specific requirements.
+
+### Faas-cli
+
+To test if faas-cli is installed in your Docker container, you can execute a command within the running container that checks the version or help menu of faas-cli. Here's how you can do it:
+
+First, find out the name or ID of the running frontend container by using the docker ps command:
+
+```sh
+
+docker ps
+```
+Look for your frontend container in the list and note its container ID or name.
+
+Next, use docker exec to run faas-cli inside that container:
+
+```sh
+docker exec <container_name_or_id> faas-cli version
+```
+or
+
+```sh
+docker exec <container_name_or_id> faas-cli --help
+```
+
+Replace <container_name_or_id> with the actual container name or ID you found with docker ps.
+
+If faas-cli is correctly installed, these commands should return the version information or the help menu of the faas-cli. If the tool is not found, you will receive an error message indicating that the command is not recognized or does not exist.
+
+![This represents the configuration is good.](pic/faasTest.png)
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
