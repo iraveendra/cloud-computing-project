@@ -14,8 +14,7 @@ import {
   
 async function checkDuplicateAppNameController(req, res) {
     try {
-      const { name } = req.body;
-      const isDuplicate = await checkDuplicateAppName(name);
+      const isDuplicate = await checkDuplicateAppName(req.body);
       res.status(200).json({ status: 'success', data: isDuplicate });
     } catch (error) {
       console.error('Error checking duplicate app name:', error.message);
@@ -26,11 +25,11 @@ async function checkDuplicateAppNameController(req, res) {
 async function createAppController(req, res) {
     try {
       const app = req.body;
-      const isDuplicate = await checkDuplicateAppName(app.name);
+      const isDuplicate = await checkDuplicateAppName(req.body);
       if (isDuplicate) {
         res.status(400).json({ status: 'error', message: 'App name already exists' });
       } else {
-        const newApp = await createApp(app);
+        const newApp = await createApp(req.body);
         res.status(201).json({ status: 'success', data: newApp });
       }
     } catch (error) {
@@ -74,15 +73,18 @@ async function getAppByIdController(req, res) {
     }
   }
   
-async function updateAppByIdController(req, res) {
+  async function updateAppByIdController(req, res) {
     try {
       const id = req.params.id;
       const updatedApp = req.body;
       const result = await updateAppById(id, updatedApp);
-      if (!result) {
-        res.status(404).json({ status: 'error', message: 'App not found' });
-      } else {
-        res.status(200).json({ status: 'success', message: 'App updated successfully' });
+
+      if (result === 'not_found') {
+          res.status(404).json({ status: 'error', message: 'App not found' });
+      } else if (result === 'updated') {
+          res.status(200).json({ status: 'success', message: 'App updated successfully' });
+      } else if (result === 'not_updated') {
+          res.status(200).json({ status: 'success', message: 'App found but not modified' });
       }
     } catch (error) {
       console.error('Error updating app by ID:', error.message);
@@ -95,16 +97,20 @@ async function updateAppByNameController(req, res) {
       const name = req.params.name;
       const updatedApp = req.body;
       const result = await updateAppByName(name, updatedApp);
-      if (!result) {
-        res.status(404).json({ status: 'error', message: 'App not found' });
-      } else {
-        res.status(200).json({ status: 'success', message: 'App updated successfully' });
+
+      if (result === 'not_found') {
+          res.status(404).json({ status: 'error', message: 'App not found' });
+      } else if (result === 'updated') {
+          res.status(200).json({ status: 'success', message: 'App updated successfully' });
+      } else if (result === 'not_updated') {
+          res.status(200).json({ status: 'success', message: 'App found but not modified' });
       }
     } catch (error) {
       console.error('Error updating app by name:', error.message);
       res.status(500).json({ status: 'error', message: 'Internal Server Error' });
     }
   }
+
   
 async function deleteAppByIdController(req, res) {
     try {
