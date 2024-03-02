@@ -2,7 +2,7 @@
     "port": 3000,
     "http": "http://",
     "hue": {
-        "bridgeip": "10.0.0.199/",
+        "bridgeip": "73.189.121.230:80/",
         "path": "api/",
         "devicetype": "my_hue_app#iphone peter",
         "username": "r1EQooryy2Y8wHXpUV02L54gZmcoYVNPqHp1yi6g"

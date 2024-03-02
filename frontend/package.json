@@ -10,9 +10,9 @@
     "classnames": "2.3.2",
     "perfect-scrollbar": "1.5.5",
     "prop-types": "15.8.1",
-    "react": "18.2.0",
+    "react": ">=16.8.0",
     "react-chartjs-2": "3.3.0",
-    "react-dom": "18.2.0",
+    "react-dom": ">=16.8.0",
     "react-notification-alert": "0.0.13",
     "react-router-dom": "6.11.1",
     "react-scripts": "5.0.1",
@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && gulp licenses",
+    "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
@@ -45,6 +45,7 @@
     "reactstrap": "8.10.1"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "typescript": "5.0.4"
   },
   "overrides": {

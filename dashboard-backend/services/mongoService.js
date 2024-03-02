@@ -3,7 +3,7 @@
 import { MongoClient } from 'mongodb';
 import config from '../config.js';
 
-const uri = 'mongodb://localhost:27017';
+const uri = process.env.MONGO_URL|| 'mongodb://localhost:27017';
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 async function connectToDatabase() {
