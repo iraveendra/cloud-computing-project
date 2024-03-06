@@ -1,3 +1,16 @@
+## Orchestraction Deployment
+
+PLEASE assign permission to setup.sh frist!
+
+```sh
+chmod +x setup.sh
+```
+
+Then run the sh file to finish one time deployment
+
+```
+./setup.sh
+```
 ## Docker Compose Changes: 
 
 If you made any recent changes to the docker-compose.yml file (like changing the port mappings), ensure you have applied those changes by bringing down and then up the services with:
