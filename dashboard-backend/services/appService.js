@@ -67,21 +67,17 @@ async function getAppByLatestDatetime() {
       const widgetIds = latestApp.widgets;
       const widgetObjects = await db.collection('widgets').find({ _id: { $in: widgetIds } }).toArray();
 
-      // Extract unique brand IDs from the widget objects
-      const brandIds = Array.from(new Set(widgetObjects.map(widget => widget.brandId)));
-
-      // Get the brand objects from the 'brands' collection based on their IDs
-      const brandObjects = await db.collection('brands').find({ _id: { $in: brandIds } }).toArray();
-
-      // Update the widgets array in the latest app with brand information
-      const updatedWidgets = latestApp.widgets.map(widgetId => {
+      // Iterate over the widgets array in the latest app
+      for (let i = 0; i < latestApp.widgets.length; i++) {
+        const widgetId = latestApp.widgets[i];
         const widgetObject = widgetObjects.find(obj => obj._id === widgetId);
-        const brandObject = brandObjects.find(obj => obj._id === widgetObject.brandId);
-        return { ...widgetObject, brand: brandObject };
-      });
-
-      // Update the latest app object with the updated widgets array
-      latestApp = { ...latestApp, widgets: updatedWidgets };
+        if (widgetObject) {
+          // Get the brand name from the 'brands' collection based on the brand ID in the widget object
+          const brand = await db.collection('brands').findOne({ _id: widgetObject.brand });
+          // Map the brand name to the 'brand' key in the widget object
+          latestApp.widgets[i] = { ...widgetObject, brand: brand ? brand.name : null };
+        }
+      }
     }
 
     // Return the latest app with updated widget information
@@ -92,7 +88,6 @@ async function getAppByLatestDatetime() {
     throw error;
   }
 }
-
 
 async function getAllApps() {
   try {

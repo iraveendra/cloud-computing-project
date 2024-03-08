@@ -33,7 +33,7 @@ const getLights = async (req, res) => {
 
 const getLight = async (req, res) => {
     try {
-        const url = `${uriWithAuth}/lights/${req.params.id}`;
+        const url = `${uriWithAuth}/lights/${Number(req.params.id)}`;
         console.log(url);
         axios({
             method: 'get',

@@ -1,39 +1,48 @@
-import React from 'react'
-import reactCSS from 'reactcss'
-import { SketchPicker } from 'react-color'
+import React from 'react';
+import reactCSS from 'reactcss';
+import { SketchPicker } from 'react-color';
 
 class ColorPicker extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          displayColorPicker: false,
-          color: this.props.initialColor || {
-            r: '241', g: '112', b: '19', a: '1',
-          },
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      displayColorPicker: false,
+      color: props.initialColor || { r: '255', g: '255', b: '255', a: '1' },
+    };
+  }
 
   handleClick = () => {
-    this.setState({ displayColorPicker: !this.state.displayColorPicker })
+    this.setState({ displayColorPicker: !this.state.displayColorPicker });
   };
 
   handleClose = () => {
-    this.setState({ displayColorPicker: false })
+    this.setState({ displayColorPicker: false });
   };
 
   handleChange = (color) => {
-    this.setState({ color: color.rgb })
+    const hexColor = color.hex; // Extract hex color value
+    this.setState({ color: color.rgb }, () => {
+      const { onChange } = this.props;
+      if (onChange) {
+        onChange(hexColor, color.rgb); // Pass hex color to onChange handler
+      }
+    });
   };
 
-  render() {
+  componentDidUpdate(prevProps) {
+    if (prevProps.initialColor !== this.props.initialColor) {
+      this.setState({ color: this.props.initialColor });
+    }
+  }
 
+  render() {
     const styles = reactCSS({
-      'default': {
+      default: {
         color: {
           width: '36px',
           height: '14px',
           borderRadius: '2px',
-          background: `rgba(${ this.state.color.r }, ${ this.state.color.g }, ${ this.state.color.b }, ${ this.state.color.a })`,
+          background: `rgba(${this.state.color.r}, ${this.state.color.g}, ${this.state.color.b}, ${this.state.color.a})`,
         },
         swatch: {
           padding: '5px',
@@ -59,17 +68,18 @@ class ColorPicker extends React.Component {
 
     return (
       <div>
-        <div style={ styles.swatch } onClick={ this.handleClick }>
-          <div style={ styles.color } />
+        <div style={styles.swatch} onClick={this.handleClick}>
+          <div style={styles.color} />
         </div>
-        { this.state.displayColorPicker ? <div style={ styles.popover }>
-          <div style={ styles.cover } onClick={ this.handleClose }/>
-          <SketchPicker color={ this.state.color } onChange={ this.handleChange } />
-        </div> : null }
-
+        {this.state.displayColorPicker ? (
+          <div style={styles.popover}>
+            <div style={styles.cover} onClick={this.handleClose} />
+            <SketchPicker color={this.state.color} onChange={this.handleChange} />
+          </div>
+        ) : null}
       </div>
-    )
+    );
   }
 }
 
-export default ColorPicker
+export default ColorPicker;
