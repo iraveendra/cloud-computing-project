@@ -1,0 +1,85 @@
+[{
+  "_id": "221417",
+  "name": "App 1",
+  "description": "Description of App 1",
+  "widgets": [
+    "1",
+    "2",
+    "d073d5d461d6"
+  ],
+  "datetime": "2024-02-27T11:40:17.679Z"
+},
+{
+  "_id": "72973",
+  "name": "App 2",
+  "description": "Description of App 2",
+  "widgets": [
+    "1",
+    "2",
+    "d073d5d461d6",
+    "d073d5d43844"
+  ],
+  "datetime": "2024-02-27T11:41:02.177Z"
+},
+{
+  "_id": "754538",
+  "name": "App 3",
+  "description": "Description of App 3",
+  "widgets": [
+    "1"
+  ],
+  "datetime": "2024-02-27T11:41:21.827Z"
+},
+{
+  "_id": "374851",
+  "name": "App 4",
+  "description": "Description of App 4",
+  "widgets": [
+    "2",
+    "d073d5d461d6"
+  ],
+  "datetime": "2024-02-27T11:41:40.623Z"
+},
+{
+  "_id": "680480",
+  "name": "App 5",
+  "description": "Description of App 5",
+  "widgets": [
+    "1",
+    "2",
+    "d073d5d43844"
+  ],
+  "datetime": "2024-02-27T11:41:56.456Z"
+},
+{
+  "_id": "931550",
+  "name": "App 6",
+  "description": "Description of App 6",
+  "widgets": [
+    "1",
+    "2",
+    "d073d5d43844",
+    "d073d5d461d6"
+  ],
+  "datetime": "2024-02-27T11:52:05.095Z"
+},
+{
+  "_id": "851939",
+  "name": "App 7",
+  "description": "Description of App 7",
+  "widgets": [
+    "d073d5d461d6"
+  ],
+  "datetime": "2024-02-27T11:52:36.442Z"
+},
+{
+  "_id": "104265",
+  "name": "App 8",
+  "description": "Description of App 8",
+  "widgets": [
+    "2",
+    "1",
+    "d073d5d461d6"
+  ],
+  "datetime": "2024-02-27T11:52:57.138Z"
+}]

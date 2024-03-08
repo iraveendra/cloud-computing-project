@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Controls</title>
+<style>
+  .dashboard-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    justify-content: center;
+  }
+  button {
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="dashboard-buttons">
+    <button onclick="fetchCurrentStateAndToggle('philips', '1')">Philips 1 Switch</button>
+    <button onclick="fetchCurrentStateAndToggle('philips', '2')">Philips 2 Switch</button>
+  <button onclick="fetchCurrentStateAndToggle('lifx', 'd073d5d43844')">LIFX 1 Switch</button>
+  <button onclick="fetchCurrentStateAndToggle('lifx', 'd073d5d461d6')">LIFX 2 Switch</button>
+  <button onclick="adjustBrightness('philips', 1, false)">Philips 1 Reduce Brightness</button>
+  <button onclick="adjustBrightness('philips', 2, false)">Philips 2 Reduce Brightness</button>
+  <button onclick="adjustBrightness('lifx', 'd073d5d43844', false)">LIFX 1 Reduce Brightness</button>
+  <button onclick="adjustBrightness('lifx', 'd073d5d461d6', false)">LIFX 2 Reduce Brightness</button>
+  <button onclick="handleButtonClick('philips', 1, 'color')">Philips 1 Change Color</button>
+  <button onclick="handleButtonClick('philips', 2, 'color')">Philips 2 Change Color</button>
+  <button onclick="handleButtonClick('lifx', 'd073d5d43844', 'color')">LIFX 1 Change Color</button>
+  <button onclick="handleButtonClick('lifx', 'd073d5d461d6', 'color')">LIFX 2 Change Color</button>
+</div>
+
+<script>
+ 
+
+  
+    function fetchCurrentStateAndToggle(deviceType, deviceId) {
+        const getStateUrl = `http://localhost:3000/${deviceType}/lights/${deviceId}`;
+      
+        // Fetch the current state
+        fetch(getStateUrl)
+        .then(response => response.json())
+        .then(data => {
+            const isOn = deviceType === 'philips' ? data.state.on : data.power === 'on';
+            const action = isOn ? 'off' : 'on';
+            
+            // Toggle the light's state based on current state
+            switchLightState(deviceType, deviceId, action);
+        })
+        .catch(error => {
+            console.error('Error fetching current state:', error);
+        });
+      }
+      
+    function switchLightState(deviceType, deviceId, action) {
+        let url;
+        let options;
+
+        if (deviceType === 'philips') {
+            // For Philips, the action is passed directly in the URL
+            url = `http://localhost:3000/philips/lights/${deviceId}/${action}`;
+            options = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+        } else if (deviceType === 'lifx') {
+            // For LIFX, the endpoint changes based on whether we are turning the light on or off
+            const actionEndpoint = action === 'on' ? 'turnon' : 'turnoff';
+            url = `http://localhost:3000/lifx/lights/${deviceId}/${actionEndpoint}`;
+            options = {
+            method: 'PUT'
+            // Note: Depending on your API, you might need to set headers or a body here as well
+            };
+        } else {
+            console.error('Unknown device type:', deviceType);
+            return;
+        }
+
+        // Make the API call to update the light state
+        fetch(url, options)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Light state updated:', data);
+            // Update the UI or store the new light state as needed
+        })
+        .catch(error => {
+            console.error('Error updating light state:', error);
+        });
+
+      }
+      
+  // Constants for brightness adjustment
+const BRIGHTNESS_INCREMENT = 20;
+const MAX_BRIGHTNESS = 255; // Assuming the max brightness value is 255
+const MIN_BRIGHTNESS = 0; // Assuming the min brightness value is 0
+
+function adjustBrightness(deviceType, deviceId, increase) {
+  const baseUrl = `http://localhost:3000/${deviceType}/lights/${deviceId}`;
+  
+  // First, fetch the current state to get the current brightness
+  fetch(baseUrl)
+  .then(response => response.json())
+  .then(data => {
+    let currentBrightness = data.state.bri;
+    let newBrightness;
+
+    // Adjust brightness up or down
+    if (increase) {
+      newBrightness = Math.min(currentBrightness + BRIGHTNESS_INCREMENT, MAX_BRIGHTNESS);
+    } else {
+      newBrightness = Math.max(currentBrightness - BRIGHTNESS_INCREMENT, MIN_BRIGHTNESS);
+    }
+
+    // Update the brightness
+    updateLightState(deviceType, deviceId, { "bri": newBrightness });
+  })
+  .catch(error => {
+    console.error('Error fetching current state:', error);
+  });
+}
+
+function updateLightState(deviceType, deviceId, newState) {
+  const baseUrl = `http://localhost:3000/${deviceType}/lights/${deviceId}/state`;
+
+  // Update the light's state
+  fetch(baseUrl, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newState) // newState is expected to be an object like { "bri": newBrightness }
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Light state updated:', data);
+    // Update the UI or store the new light state as needed
+  })
+  .catch(error => {
+    console.error('Error updating light state:', error);
+  });
+}
+  
+</script>
+
+</body>
+</html>
+

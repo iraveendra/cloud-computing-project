@@ -1,14 +1,35 @@
 version: '3.8'
 services:
+
+  mongodb:
+    image: mongo:latest
+    
+    volumes:
+      - db_data:/data/db
+      - ./dashboard-backend/data/db:/docker-entrypoint-initdb.d/db:ro
+      - ./dashboard-backend/data/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
+
+    networks:
+    - internal-network
+
+    
+
+
+
   frontend:
-    image: nginx:alpine
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "80"
+      - "8080:80"
     volumes:
       - ./frontend/build:/usr/share/nginx/html:ro
     depends_on:
       - device_integration
-      - backend_db
+      - dashboard-backend
+
+    networks:
+    - internal-network
 
   device_integration:
     image: node:17-alpine
@@ -19,18 +40,33 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - backend_db
+      - mongodb
 
-  backend_db:
-    image: postgres:13-alpine
-    environment:
-      POSTGRES_DB: exampledb
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
+    networks:
+    - internal-network
+
+  dashboard-backend:
+    image: node:17-alpine
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - ./dashboard-backend:/app
+    working_dir: /app
+    command: sh -c "npm install && npm start"
+    ports:
+      - "3010:3010"
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/dashboard
+    depends_on:
+     - mongodb
+
+    networks:
+      - internal-network
+
+  
 
 volumes:
   db_data:
+
+
+networks:
+  internal-network:
+    driver: bridge
