@@ -71,9 +71,9 @@ function AdminNavbar(props) {
                 <span className="navbar-toggler-bar bar3" />
               </NavbarToggler>
             </div>
-            <NavbarBrand href="#pablo" onClick={(e) => e.preventDefault()}>
+            {/* <NavbarBrand href="#pablo" onClick={(e) => e.preventDefault()}>
               {props.brandText}
-            </NavbarBrand>
+            </NavbarBrand> */}
           </div>
           <NavbarToggler onClick={toggleCollapse}>
             <span className="navbar-toggler-bar navbar-kebab" />

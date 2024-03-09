@@ -14,7 +14,7 @@ var routes = [
   {
     path: "/widget-form",
     name: "Widgets",
-    icon: "tim-icons icon-tag",
+    icon: "tim-icons icon-puzzle-10",
     component: <WidgetForm />,
     layout: "/admin",
   },
@@ -22,7 +22,7 @@ var routes = [
   {
     path: "/apps-collection",
     name: "Apps",
-    icon: "tim-icons icon-bullet-list-67",
+    icon: "tim-icons icon-app",
     component: <AppsCollections />,
     layout: "/admin",
   }

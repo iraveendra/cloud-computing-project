@@ -4,6 +4,7 @@ import Switch from "react-switch";
 import ColorPicker from "components/ColorPicker"; // Import ColorPicker component
 import Slider from "@mui/material/Slider"; // Import Slider component from Material-UI
 import Alert from '@mui/material/Alert'; // Import Alert component
+import { dashboardBackendUrl, deviceIntegrationUrl } from "config";
 
 function Dashboard() {
   const [widgetsData, setWidgetsData] = useState([]);
@@ -15,7 +16,7 @@ function Dashboard() {
   const fetchLIFXWidgetState = async (widgets) => {
     for (const widget of widgets) {
       try {
-        const response = await fetch(`http://localhost:3000/lifx/lights/${widget._id}`);
+        const response = await fetch(`${deviceIntegrationUrl}/lifx/lights/${widget._id}`);
         const data = await response.json();
         
         // Update switch state
@@ -48,7 +49,7 @@ function Dashboard() {
   const fetchPhilipsWidgetState = async (widgets) => {
     for (const widget of widgets) {
       try {
-        const response = await fetch(`http://localhost:3000/philips/lights/${widget._id}`);
+        const response = await fetch(`${deviceIntegrationUrl}/philips/lights/${widget._id}`);
         const data = await response.json();
   
         // Update switch state
@@ -79,7 +80,7 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    fetch('http://localhost:3010/apps/latest')
+    fetch(`${dashboardBackendUrl}/apps/latest`)
       .then(response => response.json())
       .then(data => {
         if (data.status === 'success') {
@@ -99,69 +100,6 @@ function Dashboard() {
       .catch(error => console.error('Error fetching widgets:', error));
   }, []);
   
-  const rgbToHex = (hue, sat, kelvin) => {
-    // Convert hue to RGB
-    const huePrime = hue / 182.04;
-    const x = 1 - Math.abs((huePrime / 60) % 2 - 1);
-    const c = (1 - Math.abs(2 * kelvin / 100 - 1)) * sat;
-    // const m = kelvin / 100 - c / 2;
-  
-    let r, g, b;
-    if (huePrime >= 0 && huePrime < 60) {
-      [r, g, b] = [c, c * x, 0];
-    } else if (huePrime >= 60 && huePrime < 120) {
-      [r, g, b] = [c * x, c, 0];
-    } else if (huePrime >= 120 && huePrime < 180) {
-      [r, g, b] = [0, c, c * x];
-    } else if (huePrime >= 180 && huePrime < 240) {
-      [r, g, b] = [0, c * x, c];
-    } else if (huePrime >= 240 && huePrime < 300) {
-      [r, g, b] = [c * x, 0, c];
-    } else {
-      [r, g, b] = [c, 0, c * x];
-    }
-  
-    // Convert RGB to hexadecimal
-    const toHex = (x) => {
-      const hex = Math.round(x * 255).toString(16);
-      return hex.length === 1 ? '0' + hex : hex;
-    };
-  
-    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-  };
-  
-  const hueSatToHex = (hue, sat) => {
-    const rgbColor = hslToRgb(hue / 65535, sat / 255, 0.5); // Saturation 0.5 for default
-    const hexColor = rgbToHex(rgbColor[0], rgbColor[1], rgbColor[2]);
-    return hexColor;
-  };
-  
-  const hslToRgb = (h, s, l) => {
-    let r, g, b;
-  
-    if (s === 0) {
-      r = g = b = l; // Achromatic
-    } else {
-      const hueToRgb = (p, q, t) => {
-        if (t < 0) t += 1;
-        if (t > 1) t -= 1;
-        if (t < 1 / 6) return p + (q - p) * 6 * t;
-        if (t < 1 / 2) return q;
-        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-        return p;
-      };
-  
-      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-      const p = 2 * l - q;
-      r = hueToRgb(p, q, h + 1 / 3);
-      g = hueToRgb(p, q, h);
-      b = hueToRgb(p, q, h - 1 / 3);
-    }
-  
-    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-  };
-  
-
   const getBrand = (widgetId) => {
     const widget = widgetsData.find(widget => widget._id === widgetId);
     return widget ? widget.brand : '';
@@ -178,7 +116,7 @@ function Dashboard() {
     }));
 
     // Make API call to control power
-    fetch(`http://localhost:3000/${brand.toLowerCase()}/lights/${widgetId}/state`, {
+    fetch(`${deviceIntegrationUrl}/${brand.toLowerCase()}/lights/${widgetId}/state`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -207,7 +145,7 @@ function Dashboard() {
     const brightnessPayload = brand === 'LIFX' ? { brightness: brightnessVal } : { bri: brightnessVal }; // Construct brightness payload based on brand
   
     // Make API call to control brightness
-    fetch(`http://localhost:3000/${brand.toLowerCase()}/lights/${widgetId}/state`, {
+    fetch(`${deviceIntegrationUrl}/${brand.toLowerCase()}/lights/${widgetId}/state`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -237,7 +175,7 @@ function Dashboard() {
     }));
 
     // Make API call to control color
-    fetch(`http://localhost:3000/${brand.toLowerCase()}/lights/${widgetId}/state`, {
+    fetch(`${deviceIntegrationUrl}/${brand.toLowerCase()}/lights/${widgetId}/state`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -317,6 +255,68 @@ const hexToRgb = (hexColor) => {
 };
 
 
+const rgbToHex = (hue, sat, kelvin) => {
+  // Convert hue to RGB
+  const huePrime = hue / 182.04;
+  const x = 1 - Math.abs((huePrime / 60) % 2 - 1);
+  const c = (1 - Math.abs(2 * kelvin / 100 - 1)) * sat;
+  // const m = kelvin / 100 - c / 2;
+
+  let r, g, b;
+  if (huePrime >= 0 && huePrime < 60) {
+    [r, g, b] = [c, c * x, 0];
+  } else if (huePrime >= 60 && huePrime < 120) {
+    [r, g, b] = [c * x, c, 0];
+  } else if (huePrime >= 120 && huePrime < 180) {
+    [r, g, b] = [0, c, c * x];
+  } else if (huePrime >= 180 && huePrime < 240) {
+    [r, g, b] = [0, c * x, c];
+  } else if (huePrime >= 240 && huePrime < 300) {
+    [r, g, b] = [c * x, 0, c];
+  } else {
+    [r, g, b] = [c, 0, c * x];
+  }
+
+  // Convert RGB to hexadecimal
+  const toHex = (x) => {
+    const hex = Math.round(x * 255).toString(16);
+    return hex.length === 1 ? '0' + hex : hex;
+  };
+
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+};
+
+const hueSatToHex = (hue, sat) => {
+  const rgbColor = hslToRgb(hue / 65535, sat / 255, 0.5); // Saturation 0.5 for default
+  const hexColor = rgbToHex(rgbColor[0], rgbColor[1], rgbColor[2]);
+  return hexColor;
+};
+
+const hslToRgb = (h, s, l) => {
+  let r, g, b;
+
+  if (s === 0) {
+    r = g = b = l; // Achromatic
+  } else {
+    const hueToRgb = (p, q, t) => {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    };
+
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hueToRgb(p, q, h + 1 / 3);
+    g = hueToRgb(p, q, h);
+    b = hueToRgb(p, q, h - 1 / 3);
+  }
+
+  return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+};
+
   function turnOffLights() {
     // Define the list of light IDs
     const lifxIds = ['d073d5d43844', 'd073d5d461d6'];
@@ -324,7 +324,7 @@ const hexToRgb = (hexColor) => {
   
     // Turn off LIFX lights
     lifxIds.forEach(id => {
-      fetch(`http://localhost:3000/lifx/lights/${id}/state`, {
+      fetch(`${deviceIntegrationUrl}/lifx/lights/${id}/state`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -342,7 +342,7 @@ const hexToRgb = (hexColor) => {
   
     // Turn off Philips lights
     philipsIds.forEach(id => {
-      fetch(`http://localhost:3000/philips/lights/${id}/state`, {
+      fetch(`${deviceIntegrationUrl}/philips/lights/${id}/state`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -374,55 +374,63 @@ const hexToRgb = (hexColor) => {
           {widgetsData.map(widget => (
             <Col md="4" key={widget._id}>
               <Card>
-                <CardBody>
-                  <h3>
-                    {widget.name}
-                    <span style={{ float: 'right' }}>
-                    <Switch
-                      checked={isVisible[widget._id]}
-                      onChange={(checked) => {
-                        toggleVisibility(widget._id);
-                        handleSwitchChange(widget._id, checked);
-                      }}
-                      onColor="#86d3ff"
-                      onHandleColor="#2693e6"
-                      handleDiameter={30}
-                      uncheckedIcon={false}
-                      checkedIcon={false}
-                      boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                      activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-                      height={20}
-                      width={48}
-                      className="react-switch"
-                      id="material-switch"
-                    />
-                    </span>
-                  </h3>
+              <CardBody style={{ padding: '3em 2em 2em 2em' }}>
+                  <Row>
+                    <Col md="6">
+                      <h3>{widget.name}</h3>
+                    </Col>
+                    <Col md="6">
+                      <span style={{ float: 'right' }}>
+                        <Switch
+                          checked={isVisible[widget._id]}
+                          onChange={(checked) => {
+                            toggleVisibility(widget._id);
+                            handleSwitchChange(widget._id, checked);
+                          }}
+                          onColor="#86d3ff"
+                          onHandleColor="#2693e6"
+                          handleDiameter={30}
+                          uncheckedIcon={false}
+                          checkedIcon={false}
+                          boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                          activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                          height={20}
+                          width={48}
+                          className="react-switch"
+                          id="material-switch"
+                        />
+                      </span>
+                    </Col>
+                  </Row>
                   {isVisible[widget._id] && (
                     <>
-                      <div style={{ marginTop: '20px' }}>
-                        <Slider
-                          aria-label={`Slider for widget ${widget._id}`}
-                          value={sliderValues[widget._id]}
-                          valueLabelDisplay="auto"
-                          step={5}
-                          marks
-                          min={0}
-                          max={100}
-                          onChange={(event, value) => handleSliderChange(widget._id, value)}
-                        />
-
-                      </div>
-                      <div style={{ marginTop: '20px' }}>
-                        <div>Pick a color:</div>
-                        <ColorPicker
+                      <Row style={{marginTop: '1em'}}>
+                        <Col md="9">
+                          <Slider
+                            aria-label={`Slider for widget ${widget._id}`}
+                            value={sliderValues[widget._id]}
+                            valueLabelDisplay="auto"
+                            step={5}
+                            marks
+                            min={0}
+                            max={100}
+                            onChange={(event, value) => handleSliderChange(widget._id, value)}
+                          />
+                        </Col>
+                        
+                        <Col md="3">
+                        <span style={{ float: 'right' }}>
+                          <ColorPicker
                             initialColor={colorValues[widget._id]}
                             onChange={(color) => handleColorChange(widget._id, color)}
                           />
-                      </div>
+                          </span>
+                        </Col>
+                      </Row>
                     </>
                   )}
                 </CardBody>
+
               </Card>
             </Col>
           ))}
