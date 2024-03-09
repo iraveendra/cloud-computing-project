@@ -1,4 +1,3 @@
-
 import React from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
 // nodejs library to set properties for components
@@ -90,14 +89,14 @@ function Sidebar(props) {
   return (
     <BackgroundColorContext.Consumer>
       {({ color }) => (
-        <div className="sidebar" data={color}>
+        <div className="sidebar" data={color} style={{background: '#27293c'}}>
           <div className="sidebar-wrapper" ref={sidebarRef}>
-            {logoImg !== null || logoText !== null ? (
+            {/* {logoImg !== null || logoText !== null ? (
               <div className="logo">
                 {logoImg}
                 {logoText}
               </div>
-            ) : null}
+            ) : null} */}
             <Nav>
               {routes.map((prop, key) => {
                 if (prop.redirect) return null;
@@ -108,7 +107,7 @@ function Sidebar(props) {
                     }
                     key={key}
                   >
-                    <NavLink
+                    <NavLink style={{fontSize: '1.2em'}}
                       to={prop.layout + prop.path}
                       className="nav-link"
                       onClick={props.toggleSidebar}
