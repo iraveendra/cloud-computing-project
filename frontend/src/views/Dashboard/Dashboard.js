@@ -40,6 +40,15 @@ function Dashboard() {
           ...prevState,
           [widget._id]: hexColor,
         }));
+
+          // Handle offline light
+        if (!data[0].connected) {
+          setAlert({ show: true, type: 'error', message: `Light with ${widget.name} is offline` });
+          setTimeout(() => {
+            setAlert({ show: false, type: '', message: '' });
+          }, 3000);
+        }
+
       } catch (error) {
         console.error('Error fetching LIFX widget state:', error);
       }
@@ -65,7 +74,7 @@ function Dashboard() {
           ...prevState,
           [widget._id]: brightness,
         }));
-  
+
         // Convert hue and sat to hex
         const hexColor = hueSatToHex(data.state.hue, data.state.sat);
         // Update color picker value
@@ -73,6 +82,14 @@ function Dashboard() {
           ...prevState,
           [widget._id]: hexColor,
         }));
+
+        // Handle unreachable light
+        if (!data.reachable) {
+          setAlert({ show: true, type: 'error'  , message: `Light with ${widget.name} is offline` });
+          setTimeout(() => {
+            setAlert({ show: false, type: '', message: '' });
+          }, 3000);
+        }
       } catch (error) {
         console.error('Error fetching Philips widget state:', error);
       }
@@ -376,9 +393,14 @@ const hslToRgb = (h, s, l) => {
               <Card>
               <CardBody style={{ padding: '3em 2em 2em 2em' }}>
                   <Row>
-                    <Col md="6">
-                      <h3>{widget.name}</h3>
-                    </Col>
+                  <Col md="6">
+                    <h3>
+                      {widget.name}
+                    </h3> 
+                    <h6>
+                      {widget.description} 
+                    </h6>
+                  </Col>
                     <Col md="6">
                       <span style={{ float: 'right' }}>
                         <Switch
@@ -423,6 +445,7 @@ const hslToRgb = (h, s, l) => {
                           <ColorPicker
                             initialColor={colorValues[widget._id]}
                             onChange={(color) => handleColorChange(widget._id, color)}
+                            style={{background: colorValues[widget._id]}}
                           />
                           </span>
                         </Col>
@@ -437,7 +460,7 @@ const hslToRgb = (h, s, l) => {
         </Row>
       </div>
       {alert.show &&
-        <Alert severity={alert.type} style={{ marginTop: '20px', marginBottom: '20px' }}>
+        <Alert severity={alert.type} style={{ position: 'absolute', top: 0, width: '100%', zIndex: 999 }}>
           {alert.message}
         </Alert>
       }

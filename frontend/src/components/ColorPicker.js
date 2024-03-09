@@ -7,7 +7,7 @@ class ColorPicker extends React.Component {
     super(props);
     this.state = {
       displayColorPicker: false,
-      color: props.initialColor,
+      color: props.initialColor
     };
   }
 
@@ -55,6 +55,8 @@ class ColorPicker extends React.Component {
         popover: {
           position: 'absolute',
           zIndex: '2',
+          top: 0,
+          right: '0px', // Adjust this value as needed
         },
         cover: {
           position: 'fixed',
@@ -74,7 +76,7 @@ class ColorPicker extends React.Component {
         {this.state.displayColorPicker ? (
           <div style={styles.popover}>
             <div style={styles.cover} onClick={this.handleClose} />
-            <SketchPicker color={this.state.color} onChange={this.handleChange} />
+            <SketchPicker color={this.state.color || this.initialColor} onChange={this.handleChange} />
           </div>
         ) : null}
       </div>
