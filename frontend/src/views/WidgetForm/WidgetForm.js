@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, CardBody, Col, FormGroup, Input, Label, Row } from "reactstrap";
 import Alert from '@mui/material/Alert';
+import { dashboardBackendUrl } from "config";
 
 export default function WidgetForm(props) {
     const [brands, setBrands] = useState([]);
@@ -13,7 +14,7 @@ export default function WidgetForm(props) {
     const [alert, setAlert] = useState({ show: false, type: '', message: '' });
 
     useEffect(() => {
-        fetch('http://localhost:3010/brands')
+        fetch(`${dashboardBackendUrl}/brands`)
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
@@ -34,7 +35,7 @@ export default function WidgetForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetch('http://127.0.0.1:3010/widgets', {
+        fetch(`${dashboardBackendUrl}/widgets`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -45,9 +46,20 @@ export default function WidgetForm(props) {
         .then(data => {
             if(data.status === 'success') {
                 setAlert({ show: true, type: 'success', message: 'Widget successfully added!' });
-            } else {
-                setAlert({ show: true, type: 'error', message: data.message });
-            }
+                // Reset form after successful submission
+                setFormData({
+                    id: '',
+                    name: '',
+                    description: '',
+                    brand: ''
+                });
+                // Hide the alert after 1.5 seconds
+                setTimeout(() => {
+                    setAlert({ show: false, type: '', message: '' });
+                }, 1500);
+                } else {
+                    setAlert({ show: true, type: 'error', message: data.message });
+                }
         })
         .catch((error) => {
             setAlert({ show: true, type: 'error', message: 'An error occurred. Please try again.' });
