@@ -41,13 +41,13 @@ function Dashboard() {
           [widget._id]: hexColor,
         }));
 
-          // Handle offline light
-        if (!data[0].connected) {
-          setAlert({ show: true, type: 'error', message: `Light with ${widget.name} is offline` });
-          setTimeout(() => {
-            setAlert({ show: false, type: '', message: '' });
-          }, 3000);
-        }
+        //   // Handle offline light
+        // if (!data[0].connected) {
+        //   setAlert({ show: true, type: 'error', message: `Light with ${widget.name} is offline` });
+        //   setTimeout(() => {
+        //     setAlert({ show: false, type: '', message: '' });
+        //   }, 3000);
+        // }
 
       } catch (error) {
         console.error('Error fetching LIFX widget state:', error);
@@ -83,13 +83,13 @@ function Dashboard() {
           [widget._id]: hexColor,
         }));
 
-        // Handle unreachable light
-        if (!data.reachable) {
-          setAlert({ show: true, type: 'error'  , message: `Light with ${widget.name} is offline` });
-          setTimeout(() => {
-            setAlert({ show: false, type: '', message: '' });
-          }, 3000);
-        }
+        // // Handle unreachable light
+        // if (!data.reachable) {
+        //   setAlert({ show: true, type: 'error'  , message: `Light with ${widget.name} is offline` });
+        //   setTimeout(() => {
+        //     setAlert({ show: false, type: '', message: '' });
+        //   }, 3000);
+        // }
       } catch (error) {
         console.error('Error fetching Philips widget state:', error);
       }
@@ -104,12 +104,11 @@ function Dashboard() {
           setWidgetsData(data.data.widgets);
           
           // Fetch LIFX and Philips widget state data
-        
-            const lifxWidgets = data.data.widgets.filter(widget => widget.brand === 'LIFX');
-            fetchLIFXWidgetState(lifxWidgets);
-            
-            const philipsWidgets = data.data.widgets.filter(widget => widget.brand === 'Philips');
-            fetchPhilipsWidgetState(philipsWidgets);
+          const lifxWidgets = data.data.widgets.filter(widget => widget.brand === 'LIFX');
+          fetchLIFXWidgetState(lifxWidgets);            
+          const philipsWidgets = data.data.widgets.filter(widget => widget.brand === 'Philips');
+          fetchPhilipsWidgetState(philipsWidgets);
+          
         } else {
           setAlert({ show: true, type: 'error', message: data.message });
         }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, CardBody, Col, FormGroup, Input, Label, Row } from "reactstrap";
 import Alert from '@mui/material/Alert';
+import { dashboardBackendUrl } from "config";
 
 export default function AppsCollections(props) {
     const [widgets, setWidgets] = useState([]); // State for storing widgets
@@ -16,7 +17,7 @@ export default function AppsCollections(props) {
     
         
         useEffect(() => {
-            fetch('http://127.0.0.1:3010/widgets')
+            fetch(`${dashboardBackendUrl}/widgets`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
@@ -56,7 +57,7 @@ export default function AppsCollections(props) {
                 widgets: selectedWidgets, // Include the selected widget IDs
             };
         
-            fetch('http://127.0.0.1:3010/apps', {
+            fetch(`${dashboardBackendUrl}/apps`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -70,6 +71,9 @@ export default function AppsCollections(props) {
                     // Optionally reset form and selection
                     setFormData({ name: '', description: '', brand: '' });
                     setSelectedWidgets([]);
+                    setTimeout(() => {
+                        setAlert({ show: false, type: '', message: '' });
+                    }, 1500); // Hide the alert after 1.5 seconds
                 } else {
                     setAlert({ show: true, type: 'error', message: data.message });
                 }
