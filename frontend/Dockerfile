@@ -5,6 +5,10 @@ FROM nginx:alpine
 RUN apk add --no-cache curl \
     && curl -sSL https://cli.openfaas.com | sh
 
+# Copy custom nginx config
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
+
 # Copy your build directory
 COPY ./build /usr/share/nginx/html
 

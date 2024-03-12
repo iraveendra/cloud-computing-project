@@ -1,6 +1,19 @@
 #!/bin/bash
 set -e
 
+# Ensure Docker service is running
+#sudo systemctl start docker
+
+# Check if this node is part of a swarm and leave if it is
+if [ "$(docker info --format '{{.Swarm.LocalNodeState}}')" == "active" ]; then
+  echo "Node is part of a swarm. Leaving the swarm..."
+  docker swarm leave --force
+fi
+
+# Initialize the swarm (needed once for the first time)
+echo "Initializing new swarm..."
+docker swarm init
+
 # Build the frontend
 cd frontend
 npm install
