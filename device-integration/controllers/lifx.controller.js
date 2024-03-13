@@ -1,5 +1,8 @@
 import axios from "axios";
-import properties from "../config.json" assert { type: 'json' };
+
+import properties from './config.js';
+
+
 
 const authToken = properties.lifx.token;
 const apiUrl = "https://api.lifx.com/v1/lights";

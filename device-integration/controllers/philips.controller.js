@@ -1,5 +1,6 @@
 import axios from "axios";
-import properties from "../config.json" assert { type: 'json' }
+import properties from './config.js';
+
 const uri = `${properties.http}${properties.hue.bridgeip}${properties.hue.path}`;
 const uriWithAuth = `${uri}${properties.hue.username}`;
 

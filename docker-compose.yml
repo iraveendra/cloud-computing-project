@@ -2,12 +2,11 @@ version: '3.8'
 services:
 
   mongodb:
-    image: mongo:latest
+    image: mongo_ha:latest
     
     volumes:
       - db_data:/data/db
-      - ./dashboard-backend/data/db:/docker-entrypoint-initdb.d/db:ro
-      - ./dashboard-backend/data/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
+     
 
     networks:
     - internal-network
@@ -17,46 +16,35 @@ services:
 
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: abiliang1/frontend:latest
+      
     ports:
       - "8080:80"
-    volumes:
-      - ./frontend/build:/usr/share/nginx/html:ro
-    depends_on:
-      - device_integration
-      - dashboard-backend
+    
+
 
     networks:
     - internal-network
 
   device_integration:
-    image: node:17-alpine
-    volumes:
-      - ./device-integration:/app
-    working_dir: /app
-    command: sh -c "npm install && npm start"
+    image: abiliang1/device_integration:latest
+
     ports:
       - "3000:3000"
-    depends_on:
-      - mongodb
+
 
     networks:
     - internal-network
 
   dashboard-backend:
-    image: node:17-alpine
-    volumes:
-      - ./dashboard-backend:/app
-    working_dir: /app
+    image: abiliang1/dashboard-backend:latest
+
     command: sh -c "npm install && npm start"
     ports:
       - "3010:3010"
     environment:
       - MONGO_URL=mongodb://mongodb:27017/dashboard
-    depends_on:
-     - mongodb
+
 
     networks:
       - internal-network
@@ -69,4 +57,4 @@ volumes:
 
 networks:
   internal-network:
-    driver: bridge
+    driver: overlay

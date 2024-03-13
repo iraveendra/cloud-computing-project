@@ -3,7 +3,8 @@ import * as dotenv from "dotenv";
 import cors from "cors";
 import philipsRouter from "./routes/philips.routes.js";
 import lifxRouter from "./routes/lifx.routes.js";
-import properties from "./config.json" assert { type: 'json' };
+import properties from './config.js';
+
 import fs from 'fs';
 import swaggerUi from 'swagger-ui-express';
 
@@ -27,8 +28,20 @@ app.get("/", (req, res) => {
 app.use("/philips", philipsRouter);
 app.use("/lifx", lifxRouter);
 
+
+
 const startServer = async () => {
     try {
+
+        const configModule = await import('./config.json', {
+            assert: {
+                type: 'json'
+            }
+        });
+        const properties = configModule.default;
+
+        // Use properties from the loaded configuration
+        const port = properties.port;
 
         app.listen(port, () =>
             console.log(`Server started on port http://localhost:${port}`),

@@ -4,7 +4,7 @@ const config = {
     dbName: 'dashboard',
     port: 3010, // Default port
     mongo: {
-      ip: '127.0.0.1:',
+      ip: 'mongodb',
       port: 27017
     }
   };
