@@ -74,6 +74,13 @@ function AdminNavbar(props) {
             {/* <NavbarBrand href="#pablo" onClick={(e) => e.preventDefault()}>
               {props.brandText}
             </NavbarBrand> */}
+            {/* <NavbarBrand href="#pablo" onClick={(e) => e.preventDefault()}>
+              <img
+                src={require("assets/img/favicon.png")}
+                alt="Logo"
+                className="navbar-brand-img"
+              />
+            </NavbarBrand> */}
           </div>
           <NavbarToggler onClick={toggleCollapse}>
             <span className="navbar-toggler-bar navbar-kebab" />
