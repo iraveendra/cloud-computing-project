@@ -1,42 +1,61 @@
-## Orchestraction Deployment
+# Deployment Instructions for Orchestration
 
-PLEASE assign permission to setup.sh frist!
+## Initial Setup
+
+Before proceeding, ensure that `setup.sh` has the necessary permissions:
 
 ```sh
 chmod +x setup.sh
 ```
 
-Then run the sh file to finish one time deployment
-
-```
-./setup.sh
-```
-## Docker Compose Changes: 
-
-If you made any recent changes to the docker-compose.yml file (like changing the port mappings), ensure you have applied those changes by bringing down and then up the services with:
+After granting permissions, execute the script to complete the deployment:
 
 ```sh
+./setup.sh
+```
 
+## Updating Docker Compose Configuration
+
+In case of recent modifications to the `docker-compose.yml` file (e.g., changes in port mappings), apply these changes by restarting the Docker services. This ensures your updates are active:
+
+```sh
 docker-compose down
 docker-compose up --build
 ```
-Seeing the screenshot as below:
+
+Upon successful configuration, you should see an output similar to the one below, indicating that the setup is correctly configured.
 ![This represents the configuration is good.](pics/dockerbuild.png)
-Now try to access the device-intergation and frontend port
+
+## Verifying Service Accessibility
+
+After setup, verify the accessibility of the device integration and frontend services using the following commands:
+
+### Accessing Device Integration:
+
 ```sh
-#access the device integration
+# Access the device integration base endpoint
 curl http://localhost:3000
-#{"message":"Hello World!"}
+# Expected response: {"message":"Hello World!"}
 
+# Access the Philips endpoint
 curl http://localhost:3000/philips
-#{"code":1,"msg":"Hello from Philips"}
+# Expected response: {"code":1,"msg":"Hello from Philips"}
 
+# Access the LIFX endpoint
 curl http://localhost:3000/lifx
-#{"code":1,"msg":"Hello from LIFX"
+# Expected response: {"code":1,"msg":"Hello from LIFX"}
+```
 
-#access the frontend
+### Accessing the Frontend:
+
+To access the frontend service:
+
+```sh
 curl http://localhost:8080
 ```
+
+Follow these instructions to ensure your deployment is correctly set up and all services are accessible as intended.
+
 
 
 
