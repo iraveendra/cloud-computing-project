@@ -30,6 +30,21 @@ Upon successful configuration, you should see an output similar to the one below
 
 After setup, verify the accessibility of the device integration and frontend services using the following commands:
 
+### Accessing Dashboard Backend:
+
+Verify the dashboard backend service is accessible by querying the brands, widgets, and apps endpoints:
+
+```sh
+# Access the brands endpoint
+curl http://localhost:3010/brands
+
+# Access the widgets endpoint
+curl http://localhost:3010/widgets
+
+# Access the apps endpoint
+curl http://localhost:3010/apps
+```
+
 ### Accessing Device Integration:
 
 ```sh
